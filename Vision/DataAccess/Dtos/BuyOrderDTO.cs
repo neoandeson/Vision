@@ -1,0 +1,56 @@
+﻿using DataService.Models;
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace DataService.Dtos
+{
+    public class BuyOrderDTO
+    {
+        public int Id { get; set; }
+        public string OrderNumber { get; set; }
+        public DateTime Date { get; set; }
+        public string Symbol { get; set; }
+        public int Type { get; set; }
+        public int Volume { get; set; }
+        public decimal Price { get; set; }
+        public decimal TradingFee { get; set; }
+        public int Time { get; set; }
+        public int T2 { get; set; }
+        public int T1 { get; set; }
+        public int T0 { get; set; }
+        public string Note { get; set; }
+        public int TimerSellDays { get; set; }
+        public int PriceSectionId { get; set; }
+        public int Sold { get; set; }
+        public bool IsActive { get; set; }
+        public int UserId { get; set; }
+
+        public BuyOrder MapToModel()
+        {
+            BuyOrder model = new BuyOrder()
+            {
+                Id = this.Id,
+                OrderNumber = this.OrderNumber,
+                Date = this.Date,
+                Symbol = this.Symbol,
+                Type = this.Type,
+                Volume = this.Volume,
+                Price = this.Price,
+                TradingFee = this.TradingFee,
+                Time = this.Time,
+                T2 = this.T2,
+                T1 = this.T1,
+                T0 = this.T0,
+                Note = this.Note,
+                TimerSellDays = this.TimerSellDays,
+                PriceSectionId = this.PriceSectionId,
+                Sold = this.Sold,
+                IsActive = this.IsActive,
+                UserId = this.UserId
+            };
+
+            return model;
+        }
+    }
+}
