@@ -1,7 +1,62 @@
 ﻿
 @{
-    ViewData["Title"] = "Index";
+  ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<table id="priceSection" class="display" style="width:100%">
+  <thead>
+    <tr>
+      <th>Price</th>
+      <th>Volume</th>
+      <th>T0</th>
+      <th>T1</th>
+      <th>T2</th>
+      <th>Note</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tfoot>
+    <tr>
+      <th>Price</th>
+      <th>Volume</th>
+      <th>T0</th>
+      <th>T1</th>
+      <th>T2</th>
+      <th>Note</th>
+      <th></th>
+    </tr>
+  </tfoot>
+</table>
 
+<script>
+  $(document).ready(function () {
+    $.ajax({
+      url: 'http://localhost:54214/PriceSection/GetAllByAccoutStateId',
+      method: "POST",
+      data: {accountStateId: '@ViewData["AccountStateId"]'},
+      xhrFields: {
+        withCredentials: true
+      },
+      success: function (rs) {
+        var ds = rs.data;
+        $('#priceSection').DataTable({
+          "aaData": ds,
+          "bProcessing": true,
+          "columns": [
+            { "data": "price", "className": "dt-right" },
+            { "data": "volume", "className": "dt-right" },
+            { "data": "t0", "className": "dt-right" },
+            { "data": "t1", "className": "dt-right" },
+            { "data": "t2", "className": "dt-right" },
+            { "data": "note" },
+            {
+              "data": "id", render: function (data, type, row) {
+                return '<a href="PriceSection/' + data +'">View</button>';
+              }
+            }
+          ]
+        });
+      }
+    });
+  });
+</script>

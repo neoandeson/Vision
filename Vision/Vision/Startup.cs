@@ -29,6 +29,9 @@ namespace Vision
             services.AddDbContext<VisionContext>();
 
             services.AddTransient<IAccountStateService, AccountStateService>();
+            services.AddTransient<IPriceSectionService, PriceSectionService>();
+            services.AddTransient<IBuyOrderService, BuyOrderService>();
+            services.AddTransient<ISellOrderService, SellOrderService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

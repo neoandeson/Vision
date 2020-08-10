@@ -1,54 +1,64 @@
 ﻿
 @{
-    ViewData["Title"] = "Index";
+  ViewData["Title"] = "Index";
 }
 
-<table id="example" class="display" style="width:100%">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Position</th>
-            <th>Office</th>
-            <th>Extn.</th>
-            <th>Start date</th>
-            <th>Salary</th>
-        </tr>
-    </thead>
-    <tfoot>
-        <tr>
-            <th>Name</th>
-            <th>Position</th>
-            <th>Office</th>
-            <th>Extn.</th>
-            <th>Start date</th>
-            <th>Salary</th>
-        </tr>
-    </tfoot>
+<table id="accountState" class="display" style="width:100%">
+  <thead>
+    <tr>
+      <th>Symbol</th>
+      <th>Current Value</th>
+      <th>Department</th>
+      <th>Description</th>
+      <th>Note</th>
+      <th>Total Buy</th>
+      <th>Total Sell</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tfoot>
+    <tr>
+      <th>Symbol</th>
+      <th>Current Value</th>
+      <th>Department</th>
+      <th>Description</th>
+      <th>Note</th>
+      <th>Total Buy</th>
+      <th>Total Sell</th>
+      <th></th>
+    </tr>
+  </tfoot>
 </table>
 
 <script>
-    $(document).ready(function () {
-        $.ajax({
-            url: 'http://localhost:54214/AccountState/GetAll',
-            method: "GET",
-            xhrFields: {
-                withCredentials: true
-            },
-            success: function (rs) {
-                debugger;
-                var ds = rs.data;
-                $('#example').DataTable({
-                    "aaData": ds,
-                    "columns": [
-                        { "data": "id" },
-                        { "data": "symbol" },
-                        { "data": "description" },
-                        { "data": "note" },
-                        { "data": "type" },
-                        { "data": "department" }
-                    ]
-                });
+  $(document).ready(function () {
+    $.ajax({
+      url: 'http://localhost:54214/AccountState/GetAll',
+      method: "GET",
+      xhrFields: {
+        withCredentials: true
+      },
+      success: function (rs) {
+        var ds = rs.data;
+        $('#accountState').DataTable({
+          "aaData": ds,
+          "bProcessing": true,
+          "columns": [
+            { "data": "symbol" },
+            { "data": "currentValue", "className": "dt-right" },
+            { "data": "department" },
+            { "data": "description" },
+            { "data": "note" },
+            { "data": "totalBuy", "className": "dt-right" },
+            { "data": "totalSell", "className": "dt-right" },
+            {
+              "data": "id", render: function (data, type, row) {
+                return '<a href="PriceSection?id=' + data +'">View</button>';
+              }
             }
+          ]
         });
+      }
     });
+  });
 </script>

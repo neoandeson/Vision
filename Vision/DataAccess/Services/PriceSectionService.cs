@@ -9,7 +9,7 @@ namespace DataService.Services
 {
     public interface IPriceSectionService : IServiceBase<PriceSectionDTO, PriceSectionDTO>
     {
-
+        ServiceResponse<List<PriceSectionDTO>> GetAllByAccountStateId(int accountStateId);
     }
 
     public class PriceSectionService : IPriceSectionService
@@ -65,6 +65,16 @@ namespace DataService.Services
             ServiceResponse<List<PriceSectionDTO>> rs = new ServiceResponse<List<PriceSectionDTO>>();
 
             rs.Data = _dbContext.PriceSection.AsQueryable().Select(x => x.MapToDTO()).ToList();
+            rs.IsSuccess = true;
+
+            return rs;
+        }
+
+        public ServiceResponse<List<PriceSectionDTO>> GetAllByAccountStateId(int accountStateId)
+        {
+            ServiceResponse<List<PriceSectionDTO>> rs = new ServiceResponse<List<PriceSectionDTO>>();
+
+            rs.Data = _dbContext.PriceSection.Where(p => p.AccountStateId == accountStateId).AsQueryable().Select(x => x.MapToDTO()).ToList();
             rs.IsSuccess = true;
 
             return rs;
