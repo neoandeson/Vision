@@ -14,6 +14,7 @@ namespace DataService.Models
         public decimal Price { get; set; }
         public decimal TradingFee { get; set; }
         public int Time { get; set; }
+        public int MatchedVol { get; set; }
         public int T2 { get; set; }
         public int T1 { get; set; }
         public int T0 { get; set; }

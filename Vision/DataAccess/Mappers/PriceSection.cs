@@ -15,6 +15,7 @@ namespace DataService.Models
                 AccountStateId = this.AccountStateId,
                 Price = this.Price,
                 Volume = this.Volume,
+                MatchedVol = this.MatchedVol,
                 T2 = this.T2,
                 T1 = this.T1,
                 T0 = this.T0,
@@ -31,6 +32,7 @@ namespace DataService.Models
             this.AccountStateId = dto.AccountStateId;
             this.Price = dto.Price;
             this.Volume = dto.Volume;
+            this.MatchedVol = dto.MatchedVol;
             this.T2 = dto.T2;
             this.T1 = dto.T1;
             this.T0 = dto.T0;

@@ -20,6 +20,7 @@ namespace DataService.Models
                 Price = this.Price,
                 TradingFee = this.TradingFee,
                 Time = this.Time,
+                MatchedVol = this.MatchedVol,
                 T2 = this.T2,
                 T1 = this.T1,
                 T0 = this.T0,
@@ -45,6 +46,7 @@ namespace DataService.Models
             this.Price = dto.Price;
             this.TradingFee = dto.TradingFee;
             this.Time = dto.Time;
+            this.MatchedVol = dto.MatchedVol;
             this.T2 = dto.T2;
             this.T1 = dto.T1;
             this.T0 = dto.T0;

@@ -10,42 +10,147 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Vision</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="AccountState" asp-action="Index">Account State</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="PriceSection" asp-action="Index">Price Section</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2020 - Vision - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+  <header>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+      <div class="container">
+        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Vision</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+          <ul class="navbar-nav flex-grow-1">
+            <li class="nav-item">
+              <a class="nav-link text-dark" asp-area="" asp-controller="AccountState" asp-action="Index">Account State</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-dark" asp-area="" asp-controller="PriceSection" asp-action="Index">Price Section</a>
+            </li>
+            <li class="nav-item">
+              <button type="button" class="btn btn-success" data-toggle="modal" data-target="#buyInModal" onclick="ResetBuyInPopup()">
+                Buy In
+              </button>
+            </li>
+            <li class="nav-item">&nbsp;</li>
+            <li class="nav-item">
+              <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal" onclick="ResetBuyInPopup()">
+                Sell Out
+              </button>
+            </li>
+          </ul>
         </div>
-    </footer>
-    
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.21/b-1.6.3/fc-3.3.1/fh-3.1.7/r-2.2.5/sc-2.0.2/sp-1.1.1/sl-1.3.1/datatables.min.js"></script>
-    @RenderSection("Scripts", required: false)
+      </div>
+    </nav>
+  </header>
+  <div class="container-fluid">
+    <main role="main" class="pb-3">
+      @RenderBody()
+    </main>
+  </div>
+
+  @* Start modal buy *@
+  <div class="modal fade" id="buyInModal" tabindex="-1" role="dialog" aria-labelledby="buyInModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header btn-success">
+          <h5 class="modal-title" id="buyInModalLabel">Buy In</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-3">
+              <b>Order Number</b>
+            </div>
+            <div class="col-3">
+              <input id="BO_Number" type="text" />
+            </div>
+            <div class="col-3">
+              <b>Date</b>
+            </div>
+            <div class="col-3">
+              <input id="BO_Date" type="text" />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-3">
+              <b>Symbol</b>
+            </div>
+            <div class="col-3">
+              <input id="BO_Symbol" type="text" />
+            </div>
+            <div class="col-3">
+              <b>Type</b>
+            </div>
+            <div class="col-3">
+              <input id="BO_Type" type="text" />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-3">
+              <b>Volume</b>
+            </div>
+            <div class="col-3">
+              <input id="BO_Volume" type="text" />
+            </div>
+            <div class="col-3">
+              <b>Price</b>
+            </div>
+            <div class="col-3">
+              <input id="BO_Price" type="text" />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-3">
+              <b>TradingFee</b>
+            </div>
+            <div class="col-3">
+              <input id="BO_TradingFee" type="text" />
+            </div>
+            <div class="col-3">
+              <b>Time</b>
+            </div>
+            <div class="col-3">
+              <input id="BO_Time" type="text" />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4">
+              <b>Note</b>
+            </div>
+            <div class="col-8">
+              <input id="BO_Note" type="text" />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4">
+              <b>TimerSellDays</b>
+            </div>
+            <div class="col-8">
+              <input id="BO_TimerSellDays" type="text" />
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-success">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  @* End modal buy *@
+
+  <footer class="border-top footer text-muted">
+    <div class="container">
+      &copy; 2020 - Vision - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    </div>
+  </footer>
+
+  <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="~/js/site.js" asp-append-version="true"></script>
+  <script src="~/js/BuyAndSellPopup.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.21/b-1.6.3/fc-3.3.1/fh-3.1.7/r-2.2.5/sc-2.0.2/sp-1.1.1/sl-1.3.1/datatables.min.js"></script>
+  @RenderSection("Scripts", required: false)
 </body>
 </html>

@@ -3,31 +3,64 @@
   ViewData["Title"] = "Index";
 }
 
-<table id="priceSection" class="display" style="width:100%">
-  <thead>
-    <tr>
-      <th>Price</th>
-      <th>Volume</th>
-      <th>T0</th>
-      <th>T1</th>
-      <th>T2</th>
-      <th>Note</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tfoot>
-    <tr>
-      <th>Price</th>
-      <th>Volume</th>
-      <th>T0</th>
-      <th>T1</th>
-      <th>T2</th>
-      <th>Note</th>
-      <th></th>
-    </tr>
-  </tfoot>
-</table>
-
+<div class="row">
+  <div class="col-7">
+    <table id="priceSection" class="display" style="width:100%">
+      <thead>
+        <tr>
+          <th>Price</th>
+          <th>Volume</th>
+          <th>T0</th>
+          <th>T1</th>
+          <th>T2</th>
+          <th>MachedVol</th>
+          <th>Note</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tfoot>
+        <tr>
+          <th>Price</th>
+          <th>Volume</th>
+          <th>T0</th>
+          <th>T1</th>
+          <th>T2</th>
+          <th>MachedVol</th>
+          <th>Note</th>
+          <th></th>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+  <div class="col-5">
+    <table id="buyOrder" class="display" style="width:100%">
+      <thead>
+        <tr>
+          <th>OrderNumber</th>
+          <th>Date</th>
+          <th>T0</th>
+          <th>T1</th>
+          <th>T2</th>
+          <th>MachedVol</th>
+          <th>Note</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tfoot>
+        <tr>
+          <th>OrderNumber</th>
+          <th>Date</th>
+          <th>T0</th>
+          <th>T1</th>
+          <th>T2</th>
+          <th>MachedVol</th>
+          <th>Note</th>
+          <th></th>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>
 <script>
   $(document).ready(function () {
     $.ajax({
@@ -43,15 +76,16 @@
           "aaData": ds,
           "bProcessing": true,
           "columns": [
-            { "data": "price", "className": "dt-right" },
-            { "data": "volume", "className": "dt-right" },
-            { "data": "t0", "className": "dt-right" },
-            { "data": "t1", "className": "dt-right" },
-            { "data": "t2", "className": "dt-right" },
+            { "data": "price", "width": "5%", "className": "dt-right" },
+            { "data": "volume", "width": "10%", "className": "dt-right" },
+            { "data": "t0", "width": "5%", "className": "dt-right table-success" },
+            { "data": "t1", "width": "5%", "className": "dt-right" },
+            { "data": "t2", "width": "5%", "className": "dt-right" },
+            { "data": "matchedVol", "width": "10%", "className": "dt-right" },
             { "data": "note" },
             {
               "data": "id", render: function (data, type, row) {
-                return '<a href="PriceSection/' + data +'">View</button>';
+                return '<button onclick="LoadBuyOrder(' + data + ')">View</button>';
               }
             }
           ]
@@ -59,4 +93,36 @@
       }
     });
   });
+
+    function LoadBuyOrder(priceSectionId) {
+      $.ajax({
+      url: 'http://localhost:54214/BuyOrder/GetAllByPriceSectionId',
+      method: "POST",
+        data: { priceSectionId: priceSectionId},
+      xhrFields: {
+        withCredentials: true
+      },
+      success: function (rs) {
+        var ds = rs.data;
+        $('#buyOrder').DataTable({
+          "aaData": ds,
+          "bProcessing": true,
+          "columns": [
+            { "data": "orderNumber", "width": "5%", "className": "dt-right" },
+            { "data": "volume", "className": "dt-right" },
+            { "data": "t0", "className": "dt-right" },
+            { "data": "t1", "className": "dt-right" },
+            { "data": "t2", "className": "dt-right" },
+            { "data": "matchedVol", "width": "5%", "className": "dt-right" },
+            { "data": "note" },
+            {
+              "data": "id", render: function (data, type, row) {
+                return '<a href="PriceSection/' + data +'">Detail</button>';
+              }
+            }
+          ]
+        });
+      }
+    });
+    }
 </script>

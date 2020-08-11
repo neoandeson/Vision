@@ -10,6 +10,7 @@ namespace DataService.Services
     public interface IPriceSectionService : IServiceBase<PriceSectionDTO, PriceSectionDTO>
     {
         ServiceResponse<List<PriceSectionDTO>> GetAllByAccountStateId(int accountStateId);
+        ServiceResponse<PriceSectionDTO> UpdateInfo(int id);
     }
 
     public class PriceSectionService : IPriceSectionService
@@ -96,6 +97,43 @@ namespace DataService.Services
             _dbContext.PriceSection.Update(PriceSection);
             _dbContext.SaveChanges();
 
+            rs.IsSuccess = true;
+
+            return rs;
+        }
+
+        public ServiceResponse<PriceSectionDTO> UpdateInfo(int id)
+        {
+            ServiceResponse<PriceSectionDTO> rs = new ServiceResponse<PriceSectionDTO>();
+
+            PriceSection priceSection = _dbContext.PriceSection.Find(id);
+            if(priceSection != null)
+            {
+                IQueryable<BuyOrder> buyOrder = _dbContext.BuyOrder.Where(b => b.PriceSectionId == priceSection.Id).AsQueryable();
+
+                int totalVolume = 0;
+                int totalMatchedVol = 0;
+                int totalT2 = 0;
+                int totalT1 = 0;
+                int totalT0 = 0;
+                foreach (var order in buyOrder)
+                {
+                    totalVolume += order.Volume;
+                    totalMatchedVol += order.MatchedVol;
+                    totalT2 += order.T2;
+                    totalT1 += order.T1;
+                    totalT0 += order.T0;
+                }
+
+                priceSection.Volume = totalVolume;
+                priceSection.MatchedVol = totalMatchedVol;
+                priceSection.T2 = totalT2;
+                priceSection.T1 = totalT1;
+                priceSection.T0 = totalT0;
+
+                _dbContext.PriceSection.Update(priceSection);
+                _dbContext.SaveChanges();
+            }
             rs.IsSuccess = true;
 
             return rs;

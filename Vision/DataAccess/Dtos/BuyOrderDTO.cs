@@ -16,6 +16,7 @@ namespace DataService.Dtos
         public decimal Price { get; set; }
         public decimal TradingFee { get; set; }
         public int Time { get; set; }
+        public int MatchedVol { get; set; }
         public int T2 { get; set; }
         public int T1 { get; set; }
         public int T0 { get; set; }
@@ -36,6 +37,7 @@ namespace DataService.Dtos
                 Symbol = this.Symbol,
                 Type = this.Type,
                 Volume = this.Volume,
+                MatchedVol = this.MatchedVol,
                 Price = this.Price,
                 TradingFee = this.TradingFee,
                 Time = this.Time,
