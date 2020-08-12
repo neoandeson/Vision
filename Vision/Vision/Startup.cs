@@ -28,6 +28,7 @@ namespace Vision
 
             services.AddDbContext<VisionContext>();
 
+            //Add services
             services.AddTransient<IAccountStateService, AccountStateService>();
             services.AddTransient<IPriceSectionService, PriceSectionService>();
             services.AddTransient<IBuyOrderService, BuyOrderService>();

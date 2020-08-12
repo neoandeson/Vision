@@ -11,10 +11,14 @@ namespace Vision.Controllers
     public class BuyOrderController : Controller
     {
         private readonly IBuyOrderService _buyOrderService;
+        private readonly IPriceSectionService _priceSectionService;
+        private readonly IAccountStateService _accountStateService;
 
-        public BuyOrderController(IBuyOrderService buyOrderService)
+        public BuyOrderController(IBuyOrderService buyOrderService, IPriceSectionService priceSectionService, IAccountStateService accountStateService)
         {
             _buyOrderService = buyOrderService;
+            _priceSectionService = priceSectionService;
+            _accountStateService = accountStateService;
         }
 
         public IActionResult Index()
@@ -27,9 +31,9 @@ namespace Vision.Controllers
             return Json(_buyOrderService.GetAllByPriceSectionId(priceSectionId));
         }
 
-        public IActionResult Create(BuyOrderDTO rqDto)
+        public IActionResult BuyIn(BuyOrderDTO rqDto)
         {
-            return Json(_buyOrderService.Create(rqDto));
+            return Json(_buyOrderService.BuyIn(_priceSectionService, _accountStateService, rqDto));
         }
     }
 }

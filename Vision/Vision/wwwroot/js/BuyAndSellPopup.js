@@ -17,7 +17,7 @@ function ResetSellOutPopup() {
 
 function SaveBuyIn() {
     $.ajax({
-        url: 'http://localhost:54214/BuyOrder/Create',
+        url: 'http://localhost:54214/BuyOrder/BuyIn',
         method: "POST",
         data: { rqDto: PrepareBuyInModel() },
         xhrFields: {

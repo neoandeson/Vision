@@ -9,7 +9,7 @@ namespace DataService.Services
 {
     public interface IAccountStateService : IServiceBase<AccountStateDTO, AccountStateDTO>
     {
-
+        ServiceResponse<AccountState> CreateBySymbol(string symbol);
     }
 
     public class AccountStateService : IAccountStateService
@@ -28,6 +28,25 @@ namespace DataService.Services
             AccountState accountState = rqDTO.MapToModel();
 
             rs.Data = _dbContext.AccountState.Add(accountState).Entity.MapToDTO();
+            _dbContext.SaveChanges();
+            rs.IsSuccess = true;
+
+            return rs;
+        }
+
+        public ServiceResponse<AccountState> CreateBySymbol(string symbol)
+        {
+            ServiceResponse<AccountState> rs = new ServiceResponse<AccountState>();
+
+            AccountState accountState = new AccountState() { 
+                Symbol = symbol,
+                Type = string.Empty,
+                Department = string.Empty,
+                Description = string.Empty,
+                Note = string.Empty
+            };
+
+            rs.Data = _dbContext.AccountState.Add(accountState).Entity;
             _dbContext.SaveChanges();
             rs.IsSuccess = true;
 
