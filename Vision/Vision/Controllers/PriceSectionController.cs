@@ -26,5 +26,10 @@ namespace Vision.Controllers
         {
             return Json(_priceSectionService.GetAllByAccountStateId(accountStateId));
         }
+        
+        public IActionResult GetAllBySymbol(string symbol)
+        {
+            return Json(_priceSectionService.GetAllBySymbol(symbol));
+        }
     }
 }

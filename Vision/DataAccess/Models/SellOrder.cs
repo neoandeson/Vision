@@ -16,6 +16,7 @@ namespace DataService.Models
         public decimal Value { get; set; }
         public int Time { get; set; }
         public string Note { get; set; }
+        public int PriceSessionId { get; set; }
         public int BuyOrderId { get; set; }
     }
 }

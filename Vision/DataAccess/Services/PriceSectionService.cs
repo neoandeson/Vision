@@ -10,6 +10,7 @@ namespace DataService.Services
     public interface IPriceSectionService : IServiceBase<PriceSectionDTO, PriceSectionDTO>
     {
         ServiceResponse<List<PriceSectionDTO>> GetAllByAccountStateId(int accountStateId);
+        ServiceResponse<List<PriceSectionDTO>> GetAllBySymbol(string symbol);
         ServiceResponse<PriceSectionDTO> UpdateInfo(int id);
     }
 
@@ -77,6 +78,20 @@ namespace DataService.Services
 
             rs.Data = _dbContext.PriceSection.Where(p => p.AccountStateId == accountStateId).AsQueryable().Select(x => x.MapToDTO()).ToList();
             rs.IsSuccess = true;
+
+            return rs;
+        }
+
+        public ServiceResponse<List<PriceSectionDTO>> GetAllBySymbol(string symbol)
+        {
+            ServiceResponse<List<PriceSectionDTO>> rs = new ServiceResponse<List<PriceSectionDTO>>();
+
+            AccountState accountState = _dbContext.AccountState.FirstOrDefault(a => a.Symbol == symbol);
+            if(accountState != null)
+            {
+                rs.Data = _dbContext.PriceSection.Where(p => p.AccountStateId == accountState.Id && p.T0 != 0).AsQueryable().Select(x => x.MapToDTO()).ToList();
+                rs.IsSuccess = true;
+            }
 
             return rs;
         }
