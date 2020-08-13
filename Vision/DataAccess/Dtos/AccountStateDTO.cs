@@ -11,27 +11,35 @@ namespace DataService.Dtos
         public string Symbol { get; set; }
         public string Description { get; set; }
         public string Note { get; set; }
+        public decimal? CurrentPrice { get; set; }
         public decimal CurrentValue { get; set; }
-        public decimal TotalBuy { get; set; }
-        public decimal TotalSell { get; set; }
+        public decimal? TotalBuy { get; set; }
+        public decimal? TotalSell { get; set; }
+        public decimal? TotalTax { get; set; }
+        public decimal? TotalBuyFee { get; set; }
+        public decimal? TotalSellFee { get; set; }
         public string Type { get; set; }
         public string Department { get; set; }
-        public int UserId { get; set; }
 
-        public AccountState MapToModel()
+        public AccountState MapToModel(int authUserId)
         {
             AccountState model = new AccountState()
             {
                 Id = this.Id,
-                CurrentValue = this.CurrentValue,
-                Department = this.Department,
+                Symbol = this.Symbol,
                 Description = this.Description,
                 Note = this.Note,
-                Symbol = this.Symbol,
+                CurrentPrice = this.CurrentPrice,
+                CurrentValue = this.CurrentValue,
                 TotalBuy = this.TotalBuy,
                 TotalSell = this.TotalSell,
+                TotalBuyFee = this.TotalBuyFee,
+                TotalSellFee = this.TotalSellFee,
+                TotalTax = this.TotalTax,
                 Type = this.Type,
-                UserId = this.UserId
+                Department = this.Department,
+
+                UserId = authUserId
             };
 
             return model;

@@ -18,11 +18,10 @@ namespace DataService.Models
                 Volume = this.Volume,
                 Price = this.Price,
                 TradingFee = this.TradingFee,
-                Time = this.Time,
-                Note = this.Note,
                 Tax = this.Tax,
                 Value = this.Value,
-                BuyOrderId = this.BuyOrderId
+                Time = this.Time,
+                Note = this.Note
             };
 
             return dto;
@@ -37,11 +36,10 @@ namespace DataService.Models
             this.Volume = dto.Volume;
             this.Price = dto.Price;
             this.TradingFee = dto.TradingFee;
-            this.Time = dto.Time;
-            this.Note = dto.Note;
             this.Tax = dto.Tax;
             this.Value = dto.Value;
-            this.BuyOrderId = dto.BuyOrderId;
+            this.Time = dto.Time;
+            this.Note = dto.Note;
         }
     }
 }

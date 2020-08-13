@@ -12,6 +12,7 @@ namespace DataService.Models
             PriceSectionDTO dto = new PriceSectionDTO()
             {
                 Id = this.Id,
+                Symbol = this.Symbol,
                 AccountStateId = this.AccountStateId,
                 Price = this.Price,
                 Volume = this.Volume,
@@ -19,8 +20,7 @@ namespace DataService.Models
                 T2 = this.T2,
                 T1 = this.T1,
                 T0 = this.T0,
-                Note = this.Note,
-                UserId = this.UserId
+                Note = this.Note
             };
 
             return dto;
@@ -29,6 +29,7 @@ namespace DataService.Models
         public void UpdateFieldFromDTO(PriceSectionDTO dto)
         {
             this.Id = dto.Id;
+            this.Symbol = dto.Symbol;
             this.AccountStateId = dto.AccountStateId;
             this.Price = dto.Price;
             this.Volume = dto.Volume;
@@ -37,7 +38,6 @@ namespace DataService.Models
             this.T1 = dto.T1;
             this.T0 = dto.T0;
             this.Note = dto.Note;
-            this.UserId = dto.UserId;
         }
     }
 }

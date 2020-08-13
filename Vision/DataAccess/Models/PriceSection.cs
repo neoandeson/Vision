@@ -6,6 +6,7 @@ namespace DataService.Models
     public partial class PriceSection
     {
         public int Id { get; set; }
+        public string Symbol { get; set; }
         public int AccountStateId { get; set; }
         public decimal Price { get; set; }
         public int Volume { get; set; }
@@ -15,5 +16,8 @@ namespace DataService.Models
         public int T0 { get; set; }
         public string Note { get; set; }
         public int UserId { get; set; }
+        public DateTime CreateDate { get; set; }
+        public DateTime UpdateDate { get; set; }
+        public int Status { get; set; }
     }
 }

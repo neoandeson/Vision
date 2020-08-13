@@ -12,31 +12,40 @@ namespace DataService.Models
             AccountStateDTO dto = new AccountStateDTO()
             {
                 Id = this.Id,
-                CurrentValue = this.CurrentValue,
-                Department = this.Department,
+                Symbol = this.Symbol,
                 Description = this.Description,
                 Note = this.Note,
-                Symbol = this.Symbol,
+                CurrentPrice = this.CurrentPrice,
+                CurrentValue = this.CurrentValue,
                 TotalBuy = this.TotalBuy,
                 TotalSell = this.TotalSell,
+                TotalBuyFee = this.TotalBuyFee,
+                TotalSellFee = this.TotalSellFee,
+                TotalTax = this.TotalTax,
                 Type = this.Type,
-                UserId = this.UserId
+                Department = this.Department
             };
 
             return dto;
         }
 
-        public void UpdateFieldFromDTO(AccountStateDTO dto)
+        public void UpdateFieldFromDTO(AccountStateDTO dto, int authUserId)
         {
-            this.CurrentValue = dto.CurrentValue;
-            this.Department = dto.Department;
-            this.Description = dto.Description;
-            this.Note = dto.Note;
-            this.Symbol = dto.Symbol;
-            this.TotalBuy = dto.TotalBuy;
-            this.TotalSell = dto.TotalSell;
-            this.Type = dto.Type;
-            this.UserId = dto.UserId;
+            Id = this.Id;
+            Symbol = this.Symbol;
+            Description = this.Description;
+            Note = this.Note;
+            CurrentPrice = this.CurrentPrice;
+            CurrentValue = this.CurrentValue;
+            TotalBuy = this.TotalBuy;
+            TotalSell = this.TotalSell;
+            TotalBuyFee = this.TotalBuyFee;
+            TotalSellFee = this.TotalSellFee;
+            TotalTax = this.TotalTax;
+            Type = this.Type;
+            Department = this.Department;
+
+            UserId = authUserId;
         }
     }
 }

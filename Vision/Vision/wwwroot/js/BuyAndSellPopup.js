@@ -20,7 +20,7 @@ function ResetSellOutPopup() {
     $('#SO_Price').val('');
     $('#SO_TradingFee').val('');
     $('#SO_Note').val('');
-    $('#SO_Volume').val('');
+    $('#SO_Volume').val('0');
 
     ClearTablePriceSectionToSell();
 }
@@ -73,10 +73,6 @@ function PrepareSellOutModel() {
 
 }
 
-function PriceSectionOnCheck() {
-
-}
-
 function LoadPriceSectionToSell(symbol) {
     $.ajax({
         url: 'http://localhost:54214/PriceSection/GetAllBySymbol',
@@ -93,14 +89,14 @@ function LoadPriceSectionToSell(symbol) {
                 "columns": [
                     {
                         "data": "id", "width": "5%", render: function (data, type, row) {
-                            return '<input id="cbk_ps_' + data + '" type="checkbox" onchange="PriceSectionOnCheck()">';
+                            return '<input id="cbk_ps_' + data + '" type="checkbox" >';
                         }
                     },
                     { "data": "price", "width": "5%", "className": "dt-right" },
                     { "data": "volume", "width": "5%", "className": "dt-right" },
-                    { "data": "t0", "width": "5%", "className": "dt-right" },
+                    { "data": "t0", "width": "5%", "className": "dt-right bg-success t0_available" },
                     { "data": "note" },
-                    { "data": "t0", "width": "5%", "className": "dt-right" }
+                    { "data": "t0", "width": "5%", "className": "dt-right t0_balance" }
                     //{
                     //    "data": "id", render: function (data, type, row) {
                     //        return '<a href="PriceSection/' + data + '">Detail</button>';
@@ -124,7 +120,24 @@ function ClearTablePriceSectionToSell() {
 
 $(document).ready(function () {
     $('#SO_Symbol').change(function () {
-        debugger;
         LoadPriceSectionToSell($('#SO_Symbol').val());
+    });
+
+    $('#SO_Volume').change(function () {
+        $('#ps_notAssigned').text(this.value);
+    });
+
+    $('#tbl_priceSectionToSell').on('change', ':checkbox', function () {
+        debugger;
+        var tr = $(this).parent().parent()
+        var str_t0_available = $(tr).find('td.t0_available').text();
+        var t0_available = parseInt(str_t0_available);
+
+        var ps_notAssigned = parseInt($('#ps_notAssigned').text());
+        if (ps_notAssigned > 0) {
+            ps_notAssigned -= t0_available;
+
+            $('#ps_notAssigned').text(ps_notAssigned);
+        }
     });
 });

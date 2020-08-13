@@ -25,7 +25,7 @@ namespace DataService.Services
         {
             ServiceResponse<AccountStateDTO> rs = new ServiceResponse<AccountStateDTO>();
 
-            AccountState accountState = rqDTO.MapToModel();
+            AccountState accountState = rqDTO.MapToModel(0);
 
             rs.Data = _dbContext.AccountState.Add(accountState).Entity.MapToDTO();
             _dbContext.SaveChanges();

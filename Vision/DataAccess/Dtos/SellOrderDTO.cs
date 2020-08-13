@@ -18,9 +18,8 @@ namespace DataService.Dtos
         public decimal Value { get; set; }
         public int Time { get; set; }
         public string Note { get; set; }
-        public int BuyOrderId { get; set; }
 
-        public SellOrder MapToModel()
+        public SellOrder MapToModel(int authUserId)
         {
             SellOrder model = new SellOrder()
             {
@@ -31,11 +30,12 @@ namespace DataService.Dtos
                 Volume = this.Volume,
                 Price = this.Price,
                 TradingFee = this.TradingFee,
-                Time = this.Time,
-                Note = this.Note,
                 Tax = this.Tax,
                 Value = this.Value,
-                BuyOrderId = this.BuyOrderId
+                Time = this.Time,
+                Note = this.Note,
+
+                UserId = authUserId
             };
 
             return model;
