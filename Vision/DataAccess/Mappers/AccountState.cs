@@ -15,6 +15,7 @@ namespace DataService.Models
                 Symbol = this.Symbol,
                 Description = this.Description,
                 Note = this.Note,
+                TotalDividend = this.TotalDividend,
                 CurrentPrice = this.CurrentPrice,
                 CurrentValue = this.CurrentValue,
                 TotalBuy = this.TotalBuy,
@@ -35,6 +36,7 @@ namespace DataService.Models
             Symbol = this.Symbol;
             Description = this.Description;
             Note = this.Note;
+            TotalDividend = this.TotalDividend;
             CurrentPrice = this.CurrentPrice;
             CurrentValue = this.CurrentValue;
             TotalBuy = this.TotalBuy;

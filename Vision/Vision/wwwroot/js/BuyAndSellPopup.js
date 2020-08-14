@@ -2,7 +2,7 @@
     $('#BO_Number').val('');
     $('#BO_Date').val('');
     $('#BO_Symbol').val('');
-    $('#BO_Type').val('');
+    $('#BO_InvestType').val('');
     $('#BO_Volume').val('');
     $('#BO_Price').val('');
     $('#BO_TradingFee').val('');
@@ -46,24 +46,22 @@ function SaveSellOut() {
 function PrepareBuyInModel() {
     var model = {
         Id: 0,
+        PriceSectionId: 0,
+        Symbol: $('#BO_Symbol').val(),
         OrderNumber: $('#BO_Number').val(),
         Date: $('#BO_Date').val(),
-        Symbol: $('#BO_Symbol').val(),
-        Type: $('#BO_Type').val(),
+        Time: $('#BO_Time').val(),
+        InvestType: $('#BO_InvestType').val(),
         Volume: $('#BO_Volume').val(),
         Price: $('#BO_Price').val(),
         TradingFee: $('#BO_TradingFee').val(),
-        Time: $('#BO_Time').val(),
         MatchedVol: $('#BO_Volume').val(),
         T2: 0,
         T1: 0,
         T0: 0,
         Note: $('#BO_Note').val(),
         TimerSellDays: $('#BO_TimerSellDays').val(),
-        PriceSectionId: 0,
-        Sold: 0,
-        IsActive: true,
-        UserId: 1//TODO: Session userid
+        Sold: 0
     };
 
     return model;

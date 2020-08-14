@@ -1,0 +1,117 @@
+﻿<div class="modal fade" id="sellOutModal" tabindex="-1" role="dialog" aria-labelledby="sellOutLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header btn-danger">
+        <h5 class="modal-title" id="sellOutLabel">Sell out</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-3">
+            <b>Order Number</b>
+          </div>
+          <div class="col-3">
+            <input id="SO_Number" type="text" />
+          </div>
+          <div class="col-3">
+            <b>Date</b>
+          </div>
+          <div class="col-3">
+            <input id="SO_Date" type="text" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-3">
+            <b>Symbol</b>
+          </div>
+          <div class="col-3">
+            <input id="SO_Symbol" type="text" />
+          </div>
+          <div class="col-3">
+            <b>Time</b>
+          </div>
+          <div class="col-3">
+            <input id="SO_Time" type="text" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-3">
+            <b>Tax</b>
+          </div>
+          <div class="col-3">
+            <input id="SO_Tax" type="text" />
+          </div>
+          <div class="col-3">
+            <b>Price</b>
+          </div>
+          <div class="col-3">
+            <input id="SO_Price" type="text" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-3">
+            <b>TradingFee</b>
+          </div>
+          <div class="col-3">
+            <input id="SO_TradingFee" type="text" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-3">
+            <b>Note</b>
+          </div>
+          <div class="col-8">
+            <input id="SO_Note" type="text" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-3">
+            <b>Volume</b>
+          </div>
+          <div class="col-3">
+            <input id="SO_Volume" type="text" />
+          </div>
+          <div class="col-3">
+            <b>Not Assigned:&nbsp;</b><span id="ps_notAssigned">0</span>
+          </div>
+          @*<div class="col-3">
+              <b>Balance:&nbsp;</b><span id="ps_available">0</span>
+            </div>*@
+        </div>
+        <div class="mt-2 mb-2 col-md-12" style="border-bottom: dashed 1px black">&nbsp;</div>
+        <div class="row">
+          <div class="col-12">
+            <table id="tbl_priceSectionToSell" class="display" style="width:100%">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Price</th>
+                  <th>Volume</th>
+                  <th>Available (T0)</th>
+                  <th>Note</th>
+                  <th>Balance</th>
+                </tr>
+              </thead>
+              <tfoot>
+                <tr>
+                  <th></th>
+                  <th>Price</th>
+                  <th>Volume</th>
+                  <th>Available (T0)</th>
+                  <th>Note</th>
+                  <th>Balance</th>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger" onclick="SaveSellOut()">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>

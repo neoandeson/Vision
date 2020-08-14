@@ -1,0 +1,90 @@
+﻿<div class="modal fade" id="buyInModal" tabindex="-1" role="dialog" aria-labelledby="buyInModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header btn-success">
+        <h5 class="modal-title" id="buyInModalLabel">Buy In</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-3">
+            <b>Order Number</b>
+          </div>
+          <div class="col-3">
+            <input id="BO_Number" type="text" />
+          </div>
+          <div class="col-3">
+            <b>Date</b>
+          </div>
+          <div class="col-3">
+            <input id="BO_Date" type="text" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-3">
+            <b>Symbol</b>
+          </div>
+          <div class="col-3">
+            <input id="BO_Symbol" type="text" />
+          </div>
+          <div class="col-3">
+            <b>InvestType</b>
+          </div>
+          <div class="col-3">
+            <input id="BO_InvestType" type="text" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-3">
+            <b>Volume</b>
+          </div>
+          <div class="col-3">
+            <input id="BO_Volume" type="text" />
+          </div>
+          <div class="col-3">
+            <b>Price</b>
+          </div>
+          <div class="col-3">
+            <input id="BO_Price" type="text" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-3">
+            <b>TradingFee</b>
+          </div>
+          <div class="col-3">
+            <input id="BO_TradingFee" type="text" />
+          </div>
+          <div class="col-3">
+            <b>Time</b>
+          </div>
+          <div class="col-3">
+            <input id="BO_Time" type="text" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-3">
+            <b>Note</b>
+          </div>
+          <div class="col-8">
+            <input id="BO_Note" type="text" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-4">
+            <b>TimerSellDays</b>
+          </div>
+          <div class="col-8">
+            <input id="BO_TimerSellDays" type="text" />
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-success" onclick="SaveBuyIn()">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>

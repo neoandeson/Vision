@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using DataService.Models;
 using DataService.Services;
+using DataService.Services.LogicServices;
+using DataService.Services.ModelServices;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -28,11 +30,14 @@ namespace Vision
 
             services.AddDbContext<VisionContext>();
 
-            //Add services
+            //Add model services
             services.AddTransient<IAccountStateService, AccountStateService>();
             services.AddTransient<IPriceSectionService, PriceSectionService>();
             services.AddTransient<IBuyOrderService, BuyOrderService>();
             services.AddTransient<ISellOrderService, SellOrderService>();
+
+            //Add logic services
+            services.AddTransient<IBuyInService, BuyInService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

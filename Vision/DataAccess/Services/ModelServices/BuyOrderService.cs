@@ -4,87 +4,24 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using static DataService.Utilities.Constants;
 
-namespace DataService.Services
+namespace DataService.Services.ModelServices
 {
     public interface IBuyOrderService : IServiceBase<BuyOrderDTO, BuyOrderDTO>
     {
         ServiceResponse<List<BuyOrderDTO>> GetAllByPriceSectionId(int priceSectionId);
-        ServiceResponse<BuyOrderDTO> BuyIn(IPriceSectionService priceSectionService, IAccountStateService accountStateService, BuyOrderDTO rqDTO);
-
+        BuyOrder CreateBuyOrderWithPriceSession(BuyOrderDTO rqDTO, int priceSessionId, int authUserID);
     }
 
     public class BuyOrderService : IBuyOrderService
     {
         private readonly VisionContext _dbContext;
+        private readonly int _authUserID = CurrentUser.AuthUserID;
 
         public BuyOrderService(VisionContext dbContext)
         {
             _dbContext = dbContext;
-        }
-
-        public ServiceResponse<BuyOrderDTO> BuyIn(IPriceSectionService priceSectionService, IAccountStateService accountStateService, BuyOrderDTO rqDTO)
-        {
-            ServiceResponse<BuyOrderDTO> rs = new ServiceResponse<BuyOrderDTO>();
-
-            AccountState accountState = _dbContext.AccountState.FirstOrDefault(a => a.Symbol == rqDTO.Symbol);
-            if(accountState != null)
-            {
-                PriceSection priceSection = _dbContext.PriceSection.FirstOrDefault(p => p.AccountStateId == accountState.Id && p.Price == rqDTO.Price);
-                if(priceSection == null)
-                {
-                    priceSection = new PriceSection()
-                    {
-                        AccountStateId = accountState.Id,
-                        MatchedVol = 0,
-                        Note = "",
-                        Price = rqDTO.Price,
-                        T0 = 0,
-                        T1 = 0,
-                        T2 = 0,
-                        UserId = 1,
-                        Volume = 0
-                    };
-                    _dbContext.PriceSection.Add(priceSection);
-                    _dbContext.SaveChanges();
-                }
-
-                BuyOrder buyOrder = rqDTO.MapToModel();
-                buyOrder.PriceSectionId = priceSection.Id;
-                rs.Data = _dbContext.BuyOrder.Add(buyOrder).Entity.MapToDTO();
-                _dbContext.SaveChanges();
-
-                priceSectionService.UpdateInfo(priceSection.Id);
-            } else
-            {
-                accountState = accountStateService.CreateBySymbol(rqDTO.Symbol).Data;
-
-                PriceSection priceSection = new PriceSection()
-                {
-                    AccountStateId = accountState.Id,
-                    MatchedVol = 0,
-                    Note = "",
-                    Price = rqDTO.Price,
-                    T0 = 0,
-                    T1 = 0,
-                    T2 = 0,
-                    UserId = 1,
-                    Volume = 0
-                };
-                _dbContext.PriceSection.Add(priceSection);
-                _dbContext.SaveChanges();
-
-                BuyOrder buyOrder = rqDTO.MapToModel();
-                buyOrder.PriceSectionId = priceSection.Id;
-                rs.Data = _dbContext.BuyOrder.Add(buyOrder).Entity.MapToDTO();
-                _dbContext.SaveChanges();
-
-                priceSectionService.UpdateInfo(priceSection.Id);
-            }
-
-            rs.IsSuccess = true;
-
-            return rs;
         }
 
         public ServiceResponse<BuyOrderDTO> Create(BuyOrderDTO rqDTO)
@@ -157,6 +94,21 @@ namespace DataService.Services
             rs.IsSuccess = true;
 
             return rs;
+        }
+
+        public BuyOrder CreateBuyOrderWithPriceSession(BuyOrderDTO rqDTO, int priceSessionId, int authUserID)
+        {
+            //Default when buy in volume is in MatchedVol
+            rqDTO.MatchedVol = rqDTO.Volume;
+            BuyOrder buyOrder = rqDTO.MapToModel(authUserID);
+            buyOrder.PriceSectionId = priceSessionId;
+            buyOrder.CreateDate = DateTime.Now;
+            buyOrder.UpdateDate = DateTime.Now;
+
+            _dbContext.BuyOrder.Add(buyOrder);
+            _dbContext.SaveChanges();
+
+            return buyOrder;
         }
     }
 }

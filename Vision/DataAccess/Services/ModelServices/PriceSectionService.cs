@@ -4,11 +4,14 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using static DataService.Utilities.Constants;
 
-namespace DataService.Services
+namespace DataService.Services.ModelServices
 {
     public interface IPriceSectionService : IServiceBase<PriceSectionDTO, PriceSectionDTO>
     {
+        ServiceResponse<PriceSectionDTO> CreateByAccountStateAndPrice(string symbol, int accountStateId, decimal price);
+        PriceSection GetByAccountStateAndPrice(int accountStateId, decimal price);
         ServiceResponse<List<PriceSectionDTO>> GetAllByAccountStateId(int accountStateId);
         ServiceResponse<List<PriceSectionDTO>> GetAllBySymbol(string symbol);
         ServiceResponse<PriceSectionDTO> UpdateInfo(int id);
@@ -17,6 +20,7 @@ namespace DataService.Services
     public class PriceSectionService : IPriceSectionService
     {
         private readonly VisionContext _dbContext;
+        private readonly int _authUserID = CurrentUser.AuthUserID;
 
         public PriceSectionService(VisionContext dbContext)
         {
@@ -27,10 +31,42 @@ namespace DataService.Services
         {
             ServiceResponse<PriceSectionDTO> rs = new ServiceResponse<PriceSectionDTO>();
 
-            PriceSection PriceSection = rqDTO.MapToModel();
+            PriceSection priceSection = rqDTO.MapToModel(_authUserID);
 
-            rs.Data = _dbContext.PriceSection.Add(PriceSection).Entity.MapToDTO();
+            _dbContext.PriceSection.Add(priceSection);
             _dbContext.SaveChanges();
+
+            rs.Data = priceSection.MapToDTO();
+            rs.IsSuccess = true;
+
+            return rs;
+        }
+
+        public ServiceResponse<PriceSectionDTO> CreateByAccountStateAndPrice(string symbol, int accountStateId, decimal price)
+        {
+            ServiceResponse<PriceSectionDTO> rs = new ServiceResponse<PriceSectionDTO>();
+
+            PriceSection priceSection = new PriceSection()
+            {
+                Symbol = symbol,
+                AccountStateId = accountStateId,
+                MatchedVol = 0,
+                Note = "",
+                Price = price,
+                T0 = 0,
+                T1 = 0,
+                T2 = 0,
+                UserId = 1,
+                Volume = 0,
+                CreateDate = DateTime.Now,
+                UpdateDate = DateTime.Now,
+                Status = PriceSectionStatus.Active
+            };
+
+            _dbContext.PriceSection.Add(priceSection);
+            _dbContext.SaveChanges();
+
+            rs.Data = priceSection.MapToDTO();
             rs.IsSuccess = true;
 
             return rs;
@@ -94,6 +130,11 @@ namespace DataService.Services
             }
 
             return rs;
+        }
+
+        public PriceSection GetByAccountStateAndPrice(int accountStateId, decimal price)
+        {
+            return _dbContext.PriceSection.FirstOrDefault(p => p.AccountStateId == accountStateId && p.Price == price);
         }
 
         public ServiceResponse<PriceSectionDTO> Update(PriceSectionDTO rqDTO)

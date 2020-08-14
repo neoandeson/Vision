@@ -9,6 +9,7 @@ namespace DataService.Models
         public string Symbol { get; set; }
         public string Description { get; set; }
         public string Note { get; set; }
+        public decimal? TotalDividend { get; set; }
         public decimal? CurrentPrice { get; set; }
         public decimal CurrentValue { get; set; }
         public decimal? TotalBuy { get; set; }

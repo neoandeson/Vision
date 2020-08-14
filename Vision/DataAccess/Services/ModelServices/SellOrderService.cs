@@ -4,8 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using static DataService.Utilities.Constants;
 
-namespace DataService.Services
+namespace DataService.Services.ModelServices
 {
     public interface ISellOrderService : IServiceBase<SellOrderDTO, SellOrderDTO>
     {
@@ -15,6 +16,7 @@ namespace DataService.Services
     public class SellOrderService : ISellOrderService
     {
         private readonly VisionContext _dbContext;
+        private readonly int _authUserID = CurrentUser.AuthUserID;
 
         public SellOrderService(VisionContext dbContext)
         {
@@ -25,10 +27,12 @@ namespace DataService.Services
         {
             ServiceResponse<SellOrderDTO> rs = new ServiceResponse<SellOrderDTO>();
 
-            SellOrder SellOrder = rqDTO.MapToModel();
+            SellOrder sellOrder = rqDTO.MapToModel(_authUserID);
 
-            rs.Data = _dbContext.SellOrder.Add(SellOrder).Entity.MapToDTO();
+            _dbContext.SellOrder.Add(sellOrder);
             _dbContext.SaveChanges();
+
+            rs.Data = sellOrder.MapToDTO();
             rs.IsSuccess = true;
 
             return rs;

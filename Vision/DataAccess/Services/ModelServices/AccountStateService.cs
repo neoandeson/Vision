@@ -4,46 +4,66 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using static DataService.Utilities.Constants;
 
-namespace DataService.Services
+namespace DataService.Services.ModelServices
 {
     public interface IAccountStateService : IServiceBase<AccountStateDTO, AccountStateDTO>
     {
-        ServiceResponse<AccountState> CreateBySymbol(string symbol);
+        AccountState GetBySymbol(string symbol);
+        ServiceResponse<AccountState> CreateWithSymbol(string symbol);
     }
 
     public class AccountStateService : IAccountStateService
     {
         private readonly VisionContext _dbContext;
+        private readonly IBuyOrderService _buyOrderService;
+        private readonly int _authUserID = CurrentUser.AuthUserID;
 
-        public AccountStateService(VisionContext dbContext)
+        public AccountStateService(VisionContext dbContext, IBuyOrderService buyOrderService)
         {
             _dbContext = dbContext;
+            _buyOrderService = buyOrderService;
         }
 
         public ServiceResponse<AccountStateDTO> Create(AccountStateDTO rqDTO)
         {
             ServiceResponse<AccountStateDTO> rs = new ServiceResponse<AccountStateDTO>();
 
-            AccountState accountState = rqDTO.MapToModel(0);
+            AccountState accountState = rqDTO.MapToModel(_authUserID);
 
-            rs.Data = _dbContext.AccountState.Add(accountState).Entity.MapToDTO();
+            _dbContext.AccountState.Add(accountState);
             _dbContext.SaveChanges();
+
+            rs.Data = accountState.MapToDTO();
             rs.IsSuccess = true;
 
             return rs;
         }
 
-        public ServiceResponse<AccountState> CreateBySymbol(string symbol)
+        public ServiceResponse<AccountState> CreateWithSymbol(string symbol)
         {
             ServiceResponse<AccountState> rs = new ServiceResponse<AccountState>();
 
-            AccountState accountState = new AccountState() { 
+            AccountState accountState = new AccountState()
+            {
                 Symbol = symbol,
+                Description = string.Empty,
+                Note = string.Empty,
+                TotalDividend = 0,
+                CurrentPrice = 0,
+                CurrentValue = 0,
+                TotalBuy = 0,
+                TotalSell = 0,
+                TotalTax = 0,
+                TotalBuyFee = 0,
+                TotalSellFee = 0,
                 Type = string.Empty,
                 Department = string.Empty,
-                Description = string.Empty,
-                Note = string.Empty
+                UserId = _authUserID,
+                CreateDate = DateTime.Now,
+                UpdateDate = DateTime.Now,
+                Status = AccountStateStatus.Active
             };
 
             rs.Data = _dbContext.AccountState.Add(accountState).Entity;
@@ -89,6 +109,11 @@ namespace DataService.Services
             return rs;
         }
 
+        public AccountState GetBySymbol(string symbol)
+        {
+            return _dbContext.AccountState.FirstOrDefault(a => a.Symbol == symbol);
+        }
+
         public ServiceResponse<AccountStateDTO> Update(AccountStateDTO rqDTO)
         {
             ServiceResponse<AccountStateDTO> rs = new ServiceResponse<AccountStateDTO>();
@@ -101,7 +126,7 @@ namespace DataService.Services
                 rs.Message = "Account state id " + rqDTO.Id + " is not existed";
             }
 
-            accountState.UpdateFieldFromDTO(rqDTO);
+            accountState.UpdateFieldFromDTO(rqDTO, _authUserID);
             _dbContext.AccountState.Update(accountState);
             _dbContext.SaveChanges();
 

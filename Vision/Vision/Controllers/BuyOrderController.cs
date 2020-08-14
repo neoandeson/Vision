@@ -4,21 +4,23 @@ using System.Linq;
 using System.Threading.Tasks;
 using DataService.Dtos;
 using DataService.Services;
+using DataService.Services.LogicServices;
+using DataService.Services.ModelServices;
 using Microsoft.AspNetCore.Mvc;
+using static DataService.Utilities.Constants;
 
 namespace Vision.Controllers
 {
     public class BuyOrderController : Controller
     {
         private readonly IBuyOrderService _buyOrderService;
-        private readonly IPriceSectionService _priceSectionService;
-        private readonly IAccountStateService _accountStateService;
+        private readonly IBuyInService _buyInService;
+        private readonly int _authUserID = CurrentUser.AuthUserID;
 
-        public BuyOrderController(IBuyOrderService buyOrderService, IPriceSectionService priceSectionService, IAccountStateService accountStateService)
+        public BuyOrderController(IBuyOrderService buyOrderService, IBuyInService buyInService)
         {
             _buyOrderService = buyOrderService;
-            _priceSectionService = priceSectionService;
-            _accountStateService = accountStateService;
+            _buyInService = buyInService;
         }
 
         public IActionResult Index()
@@ -33,7 +35,7 @@ namespace Vision.Controllers
 
         public IActionResult BuyIn(BuyOrderDTO rqDto)
         {
-            return Json(_buyOrderService.BuyIn(_priceSectionService, _accountStateService, rqDto));
+            return Json(_buyInService.BuyIn(rqDto, _authUserID));
         }
     }
 }
