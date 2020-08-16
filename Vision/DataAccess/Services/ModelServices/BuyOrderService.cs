@@ -12,6 +12,8 @@ namespace DataService.Services.ModelServices
     {
         ServiceResponse<List<BuyOrderDTO>> GetAllByPriceSectionId(int priceSectionId);
         BuyOrder CreateBuyOrderWithPriceSession(BuyOrderDTO rqDTO, int priceSessionId, int authUserID);
+
+        void UpdateTDays();
     }
 
     public class BuyOrderService : IBuyOrderService
@@ -109,6 +111,36 @@ namespace DataService.Services.ModelServices
             _dbContext.SaveChanges();
 
             return buyOrder;
+        }
+
+        public void UpdateTDays()
+        {
+            var activeBuyOrders = _dbContext.BuyOrder.Where(o => o.Status == BuyOrderStatus.Active).ToList();
+
+            foreach (var order in activeBuyOrders)
+            {
+                bool isSameDay = order.CreateDate.Day == DateTime.Now.Day;
+                bool isSameMonth = order.CreateDate.Month == DateTime.Now.Month;
+                bool isSameYear = order.CreateDate.Year == DateTime.Now.Year;
+
+                if (order.MatchedVol != 0 && !isSameDay && !isSameMonth && !isSameYear)
+                {
+                    order.T2 = order.MatchedVol;
+                    order.MatchedVol = 0;
+                } else if(order.T2 != 0)
+                {
+                    order.T1 = order.T2;
+                    order.T2 = 0;
+                } else
+                {
+                    order.T0 = order.T1;
+                    order.T1 = 0;
+                }
+
+                _dbContext.BuyOrder.Update(order);
+            }
+
+            _dbContext.SaveChanges();
         }
     }
 }

@@ -32,7 +32,7 @@ namespace Vision
             services.AddControllersWithViews();
 
             services.AddDbContext<VisionContext>(
-                option => option.UseSqlServer(Configuration.GetConnectionString("DefaulConnection")));
+                option => option.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddHangfire(x => x.UseSqlServerStorage(Configuration.GetConnectionString("HangfireConnection")));
 
@@ -41,9 +41,11 @@ namespace Vision
             services.AddTransient<IPriceSectionService, PriceSectionService>();
             services.AddTransient<IBuyOrderService, BuyOrderService>();
             services.AddTransient<ISellOrderService, SellOrderService>();
+            services.AddTransient<ISystemConfigService, SystemConfigService>();
 
             //Add logic services
             services.AddTransient<IBuyInService, BuyInService>();
+            services.AddTransient<IUpdateTDaysService, UpdateTDaysService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

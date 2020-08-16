@@ -24,6 +24,12 @@ namespace DataService.Utilities
             public static int DeActive = 0;
         }
 
+        public static class BuyOrderStatus
+        {
+            public static int Active = 1;
+            public static int DeActive = 0;
+        }
+
         public static class ResponseMessage
         {
             public static string BuyInSuccessfully = "Buy In Successfully";

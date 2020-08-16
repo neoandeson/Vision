@@ -15,6 +15,7 @@ namespace DataService.Services.ModelServices
         ServiceResponse<List<PriceSectionDTO>> GetAllByAccountStateId(int accountStateId);
         ServiceResponse<List<PriceSectionDTO>> GetAllBySymbol(string symbol);
         ServiceResponse<PriceSectionDTO> UpdateInfo(int id);
+        void UpdateAllInfo();
     }
 
     public class PriceSectionService : IPriceSectionService
@@ -156,6 +157,16 @@ namespace DataService.Services.ModelServices
             rs.IsSuccess = true;
 
             return rs;
+        }
+
+        public void UpdateAllInfo()
+        {
+            var priceSections = _dbContext.PriceSection.Where(s => s.Status == PriceSectionStatus.Active).ToList();
+
+            foreach (var section in priceSections)
+            {
+                UpdateInfo(section.Id);
+            }
         }
 
         public ServiceResponse<PriceSectionDTO> UpdateInfo(int id)
