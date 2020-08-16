@@ -20,13 +20,14 @@ namespace DataService.Models
         public virtual DbSet<OrderHistory> OrderHistory { get; set; }
         public virtual DbSet<PriceSection> PriceSection { get; set; }
         public virtual DbSet<SellOrder> SellOrder { get; set; }
+        public virtual DbSet<SystemConfig> SystemConfig { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=.;Database=Vision;User ID=sa;Password=1234;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=DESKTOP-UH7HU37\\TIENTPSQL;Database=Vision;User ID=sa;Password=1234;Trusted_Connection=True;");
             }
         }
 
@@ -55,6 +56,8 @@ namespace DataService.Models
                 entity.Property(e => e.TotalBuy).HasColumnType("money");
 
                 entity.Property(e => e.TotalBuyFee).HasColumnType("money");
+
+                entity.Property(e => e.TotalDividend).HasColumnType("money");
 
                 entity.Property(e => e.TotalSell).HasColumnType("money");
 
@@ -119,6 +122,8 @@ namespace DataService.Models
 
             modelBuilder.Entity<PriceSection>(entity =>
             {
+                entity.Property(e => e.CreateDate).HasColumnType("datetime");
+
                 entity.Property(e => e.Note).HasMaxLength(100);
 
                 entity.Property(e => e.Price).HasColumnType("money");
@@ -126,6 +131,8 @@ namespace DataService.Models
                 entity.Property(e => e.Symbol)
                     .IsRequired()
                     .HasMaxLength(10);
+
+                entity.Property(e => e.UpdateDate).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<SellOrder>(entity =>
@@ -153,6 +160,22 @@ namespace DataService.Models
                 entity.Property(e => e.UpdateDate).HasColumnType("datetime");
 
                 entity.Property(e => e.Value).HasColumnType("money");
+            });
+
+            modelBuilder.Entity<SystemConfig>(entity =>
+            {
+                entity.Property(e => e.Description).HasMaxLength(50);
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.StringValue)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.UpdateDate).HasColumnType("datetime");
             });
 
             OnModelCreatingPartial(modelBuilder);

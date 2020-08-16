@@ -10,7 +10,7 @@ namespace DataService.Services.LogicServices
 {
     public interface IBuyInService
     {
-        public ServiceResponse<BuyOrderDTO> BuyIn(BuyOrderDTO rqDTO, int authUserID);
+        ServiceResponse<BuyOrderDTO> BuyIn(BuyOrderDTO rqDTO, int authUserID);
     }
     
     public class BuyInService : IBuyInService
@@ -63,6 +63,7 @@ namespace DataService.Services.LogicServices
             }
 
             rs.IsSuccess = true;
+            rs.Message = ResponseMessage.BuyInSuccessfully;
 
             return rs;
         }

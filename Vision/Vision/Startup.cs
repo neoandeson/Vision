@@ -8,9 +8,12 @@ using DataService.Services.LogicServices;
 using DataService.Services.ModelServices;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Hangfire;
+using Hangfire.SqlServer;
 
 namespace Vision
 {
@@ -28,7 +31,10 @@ namespace Vision
         {
             services.AddControllersWithViews();
 
-            services.AddDbContext<VisionContext>();
+            services.AddDbContext<VisionContext>(
+                option => option.UseSqlServer(Configuration.GetConnectionString("DefaulConnection")));
+
+            services.AddHangfire(x => x.UseSqlServerStorage(Configuration.GetConnectionString("HangfireConnection")));
 
             //Add model services
             services.AddTransient<IAccountStateService, AccountStateService>();
@@ -56,6 +62,10 @@ namespace Vision
             app.UseRouting();
 
             app.UseAuthorization();
+
+            //Add Hangfire
+            app.UseHangfireDashboard();
+            app.UseHangfireServer();
 
             app.UseEndpoints(endpoints =>
             {
