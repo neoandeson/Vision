@@ -23,5 +23,13 @@ namespace Vision.Controllers
 
             return RedirectToAction("", "Hangfire");
         }
+
+        [HttpPost]
+        public IActionResult Update()
+        {
+            _updateTDaysService.Update();
+
+            return Ok("success");
+        }
     }
 }

@@ -103,6 +103,7 @@ namespace DataService.Services.ModelServices
             //Default when buy in volume is in MatchedVol
             rqDTO.MatchedVol = rqDTO.Volume;
             BuyOrder buyOrder = rqDTO.MapToModel(authUserID);
+            buyOrder.Status = BuyOrderStatus.Active;
             buyOrder.PriceSectionId = priceSessionId;
             buyOrder.CreateDate = DateTime.Now;
             buyOrder.UpdateDate = DateTime.Now;
@@ -123,7 +124,7 @@ namespace DataService.Services.ModelServices
                 bool isSameMonth = order.CreateDate.Month == DateTime.Now.Month;
                 bool isSameYear = order.CreateDate.Year == DateTime.Now.Year;
 
-                if (order.MatchedVol != 0 && !isSameDay && !isSameMonth && !isSameYear)
+                if (order.MatchedVol != 0 && (!isSameDay || !isSameMonth || !isSameYear))
                 {
                     order.T2 = order.MatchedVol;
                     order.MatchedVol = 0;
@@ -131,7 +132,7 @@ namespace DataService.Services.ModelServices
                 {
                     order.T1 = order.T2;
                     order.T2 = 0;
-                } else
+                } else if(order.T1 != 0)
                 {
                     order.T0 = order.T1;
                     order.T1 = 0;
