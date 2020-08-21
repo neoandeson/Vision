@@ -1,50 +1,50 @@
 ﻿$(document).ready(function () {
     $('#SO_Symbol').change(function () {
-        ClearTablePriceSectionToSell();
+        ClearDataTable('#tbl_priceSectionToSell');
         LoadPriceSectionToSell($('#SO_Symbol').val());
     });
 
     $('#SO_Volume').change(function () {
         $('#ps_notAssigned').text(this.value);
+        ResetPriceSectionToSellTable();
     });
 
     $('#tbl_priceSectionToSell').on('change', ':checkbox', function () {
-        debugger;
         var $tr = $(this).parent().parent();
-        var $td_colT0 = $($tr).find('td.colT0');
+        var $tdcolBalance = $($tr).find('td.tdcolBalance');
 
-        var colT0 = parseInt($td_colT0.text());
+        var tdcolBalance = parseInt($tdcolBalance.text());
         var ps_notAssigned = parseInt($('#ps_notAssigned').text());
 
         if ($(this).is(':checked')) {
-            ApplySelectedPriceSection(colT0, ps_notAssigned, $td_colT0);
+            ApplySelectedPriceSection(tdcolBalance, ps_notAssigned, $tdcolBalance);
         } else {
-            var colVolume = parseInt(($tr).find('td.colVolume').text());
-            UnApplySelectedPriceSection(colT0, ps_notAssigned, colVolume, $td_colT0)
+            var tdcolAvailable = parseInt(($tr).find('td.tdcolAvailable').text());
+            UnApplySelectedPriceSection(tdcolBalance, ps_notAssigned, tdcolAvailable, $tdcolBalance)
         }
     });
 });
 
-function ApplySelectedPriceSection(colT0, ps_notAssigned, $td_colT0) {
+function ApplySelectedPriceSection(tdcolBalance, ps_notAssigned, $tdcolBalance) {
     if (ps_notAssigned > 0) {
-        var diff = ps_notAssigned - colT0;
+        var diff = ps_notAssigned - tdcolBalance;
 
         if (diff > 0) {
             $('#ps_notAssigned').text(diff);
-            $td_colT0.text(0);
+            $tdcolBalance.text(0);
         } else if (diff <= 0) {
             $('#ps_notAssigned').text(0);
-            $td_colT0.text(Math.abs(diff));
+            $tdcolBalance.text(Math.abs(diff));
         }
     }
 }
 
-function UnApplySelectedPriceSection(colT0, ps_notAssigned, colVolume, $td_colT0) {
+function UnApplySelectedPriceSection(tdcolBalance, ps_notAssigned, tdcolAvailable, $tdcolBalance) {
     if (ps_notAssigned >= 0) {
-        $td_colT0.text(colVolume);
+        $tdcolBalance.text(tdcolAvailable);
 
-        var diff = colVolume - colT0;
-        $('#ps_notAssigned').text(diff);
+        var diff = tdcolAvailable - tdcolBalance;
+        $('#ps_notAssigned').text(ps_notAssigned + diff);
     }
 }
 
@@ -68,10 +68,10 @@ function LoadPriceSectionToSell(symbol) {
                         }
                     },
                     { "data": "price", "width": "5%", "className": "dt-right" },
-                    { "data": "volume", "width": "5%", "className": "dt-right colVolume" },
-                    { "data": "t0", "width": "5%", "className": "dt-right bg-success colT0" },
-                    { "data": "note" },
-                    { "data": "t0", "width": "5%", "className": "dt-right t0_balance" }
+                    { "data": "volume", "width": "5%", "className": "dt-right tdcolVolume" },
+                    { "data": "t0", "width": "5%", "className": "dt-right tdcolAvailable" },
+                    { "data": "t0", "width": "5%", "className": "dt-right table-success tdcolBalance" },
+                    { "data": "note" }
                     //{
                     //    "data": "id", render: function (data, type, row) {
                     //        return '<a href="PriceSection/' + data + '">Detail</button>';
@@ -95,13 +95,55 @@ function ResetSellOutPopup() {
     $('#SO_Volume').val('0');
     $('#ps_notAssigned').text('0');
 
-    ClearTablePriceSectionToSell();
+    ClearDataTable('#tbl_priceSectionToSell');
+}
+
+function ResetPriceSectionToSellTable() {
+    $('#tbl_priceSectionToSell > tbody > tr').each(function (i, el) {
+        var $row = $(el);
+        var $cbk = $($row.find('td > input[type="checkbox"]'));
+
+        $cbk.prop('checked', false);
+        var t0Volume = $row.find('td.tdcolAvailable').text();
+        $row.find('td.tdcolBalance').text(t0Volume);
+    });
 }
 
 function SaveSellOut() {
+    var model = PrepareSellOutModel();
 
+    $.ajax({
+        url: 'http://localhost:54214/SellOrder/SellOut',
+        method: "POST",
+        data: { rqVMs: model },
+        xhrFields: {
+            withCredentials: true
+        },
+        success: function (rs) {
+            alert(rs);
+        }
+    });
 }
 
 function PrepareSellOutModel() {
+    var arrSelectedPriceSection = [];
 
+    $('#tbl_priceSectionToSell > tbody > tr').each(function (i, el) {
+        var $row = $(el);
+        var $cbk = $($row.find('td > input[type="checkbox"]'));
+
+        if ($cbk.is(':checked')) {
+            var tdcolAvailable = parseInt(($row).find('td.tdcolAvailable').text());
+            var tdcolBalance = parseInt($($row).find('td.tdcolBalance').text());
+
+            arrSelectedPriceSection.push(
+                {
+                    PriceSectionId: $cbk.attr('id').split('_')[2],
+                    SoldVolume: tdcolAvailable - tdcolBalance
+                }
+            )
+        }
+    });
+
+    return arrSelectedPriceSection;
 }

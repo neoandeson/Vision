@@ -5,7 +5,7 @@
 
 <div class="row">
   <div class="col-7">
-    <table id="priceSection" class="display" style="width:100%">
+    <table id="tbl_priceSection" class="display" style="width:100%">
       <thead>
         <tr>
           <th>Price</th>
@@ -33,7 +33,7 @@
     </table>
   </div>
   <div class="col-5">
-    <table id="buyOrder" class="display" style="width:100%">
+    <table id="tbl_buyOrder" class="display" style="width:100%">
       <thead>
         <tr>
           <th>OrderNumber</th>
@@ -63,6 +63,12 @@
 </div>
 <script>
   $(document).ready(function () {
+    LoadPriceSection();
+  });
+
+  function LoadPriceSection() {
+    ClearDataTable('#tbl_priceSection');
+
     $.ajax({
       url: 'http://localhost:54214/PriceSection/GetAllByAccoutStateId',
       method: "POST",
@@ -72,7 +78,7 @@
       },
       success: function (rs) {
         var ds = rs.data;
-        $('#priceSection').DataTable({
+        $('#tbl_priceSection').DataTable({
           "aaData": ds,
           "bProcessing": true,
           "columns": [
@@ -92,9 +98,11 @@
         });
       }
     });
-  });
+  }
 
-    function LoadBuyOrder(priceSectionId) {
+  function LoadBuyOrder(priceSectionId) {
+    ClearDataTable('#tbl_buyOrder');
+
       $.ajax({
       url: 'http://localhost:54214/BuyOrder/GetAllByPriceSectionId',
       method: "POST",
@@ -104,7 +112,7 @@
       },
       success: function (rs) {
         var ds = rs.data;
-        $('#buyOrder').DataTable({
+        $('#tbl_buyOrder').DataTable({
           "aaData": ds,
           "bProcessing": true,
           "columns": [
@@ -124,5 +132,5 @@
         });
       }
     });
-    }
+   }
 </script>

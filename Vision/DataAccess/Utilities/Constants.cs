@@ -33,6 +33,7 @@ namespace DataService.Utilities
         public static class ResponseMessage
         {
             public static string BuyInSuccessfully = "Buy In Successfully";
+            public static string SellOutSuccessfully = "Sell Out Successfully";
         }
     }
 }

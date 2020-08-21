@@ -2,8 +2,8 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
-function ClearTablePriceSectionToSell() {
-    var dataTable = $("#tbl_priceSectionToSell").DataTable();
+function ClearDataTable(tableId) {
+    var dataTable = $(tableId).DataTable();
 
     //clear datatable
     dataTable.clear().draw();

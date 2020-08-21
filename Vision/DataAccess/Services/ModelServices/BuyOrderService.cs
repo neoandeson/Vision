@@ -11,6 +11,7 @@ namespace DataService.Services.ModelServices
     public interface IBuyOrderService : IServiceBase<BuyOrderDTO, BuyOrderDTO>
     {
         ServiceResponse<List<BuyOrderDTO>> GetAllByPriceSectionId(int priceSectionId);
+        ServiceResponse<List<BuyOrderDTO>> GetAllByPriceSectionIdAvailableToSell(int priceSectionId);
         BuyOrder CreateBuyOrderWithPriceSession(BuyOrderDTO rqDTO, int priceSessionId, int authUserID);
 
         void UpdateTDays();
@@ -142,6 +143,16 @@ namespace DataService.Services.ModelServices
             }
 
             _dbContext.SaveChanges();
+        }
+
+        public ServiceResponse<List<BuyOrderDTO>> GetAllByPriceSectionIdAvailableToSell(int priceSectionId)
+        {
+            ServiceResponse<List<BuyOrderDTO>> rs = new ServiceResponse<List<BuyOrderDTO>>();
+
+            rs.Data = _dbContext.BuyOrder.Where(p => p.PriceSectionId == priceSectionId && p.Sold < p.Volume).AsQueryable().Select(x => x.MapToDTO()).ToList();
+            rs.IsSuccess = true;
+
+            return rs;
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using DataService.Dtos;
 using DataService.Services.ModelServices;
+using DataService.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Vision.Controllers
@@ -22,9 +23,14 @@ namespace Vision.Controllers
             return View();
         }
 
-        public IActionResult Create(SellOrderDTO rqDto)
+        [HttpPost]
+        public IActionResult SellOut(SellOutViewModel[] rqVMs)
         {
-            return Json(_sellOrderService.Create(rqDto));
+            foreach (var vm in rqVMs)
+            {
+                int soldVolume = vm.SoldVolume;
+            }
+            return Json("");
         }
     }
 }
