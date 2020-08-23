@@ -8,6 +8,7 @@ namespace DataService.Models
         public int Id { get; set; }
         public int UserId { get; set; }
         public int PriceSectionId { get; set; }
+        public int BuyOrderId { get; set; }
         public int SellOrderId { get; set; }
         public string Symbol { get; set; }
         public decimal BuyPrice { get; set; }

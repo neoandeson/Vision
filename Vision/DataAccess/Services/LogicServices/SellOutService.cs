@@ -53,23 +53,48 @@ namespace DataService.Services.LogicServices
                     PriceSectionDTO priceSectionDTO = _priceSectionService.Get(vm.PriceSectionId).Data;
                     if (priceSectionDTO != null)
                     {
-                        OrderHistoryDTO orderHistory = new OrderHistoryDTO()
+                        //Prepare history model
+                        int mapVolume = vm.SoldVolume;
+                        while (mapVolume > 0)
                         {
-                            PriceSectionId = priceSectionDTO.Id,
-                            SellOrderId = createdSellOrderDTO.Id,
-                            Symbol = priceSectionDTO.Symbol,
-                            BuyPrice = priceSectionDTO.Price,
-                            SellPrice = createdSellOrderDTO.Price,
-                            Volume = priceSectionDTO.Volume,
-                            Margin = (priceSectionDTO.Price - createdSellOrderDTO.Price),
-                            BuyTradingFee = 0,//TODO: map
-                            SellTradingFee = createdSellOrderDTO.TradingFee,
-                            SellTax = createdSellOrderDTO.Tax,
-                            TotalFee = 0 + createdSellOrderDTO.TradingFee + createdSellOrderDTO.Tax,
-                            Revenue = (priceSectionDTO.Price - createdSellOrderDTO.Price) * priceSectionDTO.Volume
-                        };
+                            List<BuyOrderDTO> listBuyOrderDTO = _buyOrderService.GetAllByPriceSectionIdAvailableToSell(priceSectionDTO.Id).Data;
 
-                        _orderHistoryService.Create(orderHistory);
+                            foreach (var buyOrderDTO in listBuyOrderDTO)
+                            {
+                                if (mapVolume == 0) break;
+
+                                //Still mapVolume
+                                if (mapVolume > buyOrderDTO.T0)
+                                {
+                                    mapVolume -= buyOrderDTO.T0;
+                                    buyOrderDTO.T0 = 0;
+                                    buyOrderDTO.Sold = buyOrderDTO.Volume;
+
+                                    //Create OrderHistory
+                                    CreateOrderHistory(priceSectionDTO, createdSellOrderDTO, buyOrderDTO, buyOrderDTO.T0);
+                                    //Update Sold in BuyOrder
+                                    _buyOrderService.Update(buyOrderDTO);
+                                }
+                                else
+                                //Out mapvolume
+                                if (mapVolume < buyOrderDTO.Volume)
+                                {
+
+                                    //Create OrderHistory
+                                    CreateOrderHistory(priceSectionDTO, createdSellOrderDTO, buyOrderDTO, buyOrderDTO.T0 - mapVolume);
+                                    
+                                    mapVolume = 0;
+                                    buyOrderDTO.T0 = buyOrderDTO.T0 - mapVolume;
+                                    buyOrderDTO.Sold += buyOrderDTO.T0 - mapVolume;
+
+                                    //Update Sold in BuyOrder
+                                    _buyOrderService.Update(buyOrderDTO);
+                                }
+
+                            }
+                        }
+
+                        
                     }
                     rs.IsSuccess = true;
                     rs.Message = ResponseMessage.SellOutSuccessfully;
@@ -79,17 +104,25 @@ namespace DataService.Services.LogicServices
             return rs;
         }
 
-        private void MapBuyIn(int priceSectionId, int volume)
+        private void CreateOrderHistory(PriceSectionDTO priceSectionDTO, SellOrderDTO createdSellOrderDTO, BuyOrderDTO buyOrderDTO, int sellVolume)
         {
-            List<BuyOrderDTO> listBuyOrderDTO = _buyOrderService.GetAllByPriceSectionIdAvailableToSell(priceSectionId).Data;
-
-            foreach (var buyOrder in listBuyOrderDTO)
+            OrderHistoryDTO orderHistory = new OrderHistoryDTO()
             {
-                if(volume == 0) break;
+                PriceSectionId = priceSectionDTO.Id,
+                SellOrderId = createdSellOrderDTO.Id,
+                Symbol = priceSectionDTO.Symbol,
+                BuyPrice = priceSectionDTO.Price,
+                SellPrice = createdSellOrderDTO.Price,
+                Volume = sellVolume,
+                Margin = (priceSectionDTO.Price - createdSellOrderDTO.Price),
+                BuyTradingFee = (buyOrderDTO.TradingFee / buyOrderDTO.Volume) * sellVolume,
+                SellTradingFee = (createdSellOrderDTO.TradingFee / createdSellOrderDTO.Volume) * sellVolume,
+                SellTax = createdSellOrderDTO.Tax,
+                TotalFee = buyOrderDTO.TradingFee + createdSellOrderDTO.TradingFee + createdSellOrderDTO.Tax,
+                Revenue = ((priceSectionDTO.Price - createdSellOrderDTO.Price) * sellVolume) - (buyOrderDTO.TradingFee + createdSellOrderDTO.TradingFee + createdSellOrderDTO.Tax)
+            };
 
-                int soldVolume = Math.Abs(volume - buyOrder.T0);
-
-            }
+            _orderHistoryService.Create(orderHistory);
         }
     }
 }

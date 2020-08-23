@@ -9,6 +9,7 @@ namespace DataService.Dtos
     {
         public int Id { get; set; }
         public int PriceSectionId { get; set; }
+        public int BuyOrderId { get; set; }
         public int SellOrderId { get; set; }
         public string Symbol { get; set; }
         public decimal BuyPrice { get; set; }
@@ -27,6 +28,7 @@ namespace DataService.Dtos
             {
                 Id = this.Id,
                 PriceSectionId = this.PriceSectionId,
+                BuyOrderId = this.BuyOrderId,
                 SellOrderId = this.SellOrderId,
                 Symbol = this.Symbol,
                 BuyPrice = this.BuyPrice,
