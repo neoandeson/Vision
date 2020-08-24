@@ -14,7 +14,8 @@ namespace DataService.Services.ModelServices
         ServiceResponse<List<BuyOrderDTO>> GetAllByPriceSectionIdAvailableToSell(int priceSectionId);
         BuyOrder CreateBuyOrderWithPriceSession(BuyOrderDTO rqDTO, int priceSessionId, int authUserID);
 
-        void UpdateTDays();
+        void UpdateManualTDays();
+        void UpdateAutoTDays();
     }
 
     public class BuyOrderService : IBuyOrderService
@@ -115,7 +116,7 @@ namespace DataService.Services.ModelServices
             return buyOrder;
         }
 
-        public void UpdateTDays()
+        public void UpdateManualTDays()
         {
             var activeBuyOrders = _dbContext.BuyOrder.Where(o => o.Status == BuyOrderStatus.Active).ToList();
 
@@ -129,14 +130,51 @@ namespace DataService.Services.ModelServices
                 {
                     order.T2 = order.MatchedVol;
                     order.MatchedVol = 0;
-                } else if(order.T2 != 0)
+                }
+                else if (order.T2 != 0)
                 {
                     order.T1 = order.T2;
                     order.T2 = 0;
-                } else if(order.T1 != 0)
+                }
+                else if (order.T1 != 0)
                 {
                     order.T0 = order.T1;
                     order.T1 = 0;
+                }
+
+                _dbContext.BuyOrder.Update(order);
+            }
+
+            _dbContext.SaveChanges();
+        }
+
+        public void UpdateAutoTDays()
+        {
+            var activeBuyOrders = _dbContext.BuyOrder.Where(o => o.Status == BuyOrderStatus.Active).ToList();
+
+            //Not update on Saturday and Sunday
+            DayOfWeek today = DateTime.Now.DayOfWeek;
+            if (today == DayOfWeek.Saturday || today == DayOfWeek.Sunday) return;
+
+            foreach (var order in activeBuyOrders)
+            {
+                int diffDate = (int)(DateTime.Now - order.Date).TotalDays;
+
+                switch (diffDate)
+                {
+                    case 2:
+                        order.T0 = order.T1;
+                        order.T1 = 0;
+                        break;
+                    case 1:
+                        order.T1 = order.T2;
+                        order.T2 = 0;
+                        break;
+                    case 0:
+                        order.T2 = order.MatchedVol;
+                        order.MatchedVol = 0;
+                        break;
+                    default: break;
                 }
 
                 _dbContext.BuyOrder.Update(order);

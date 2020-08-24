@@ -1,6 +1,6 @@
 ﻿function UpdatePrice() {
     $.ajax({
-        url: 'http://localhost:54214/AutoJob/Update',
+        url: 'http://localhost:54214/AutoJob/UpdateManual',
         method: "POST",
         data: { },
         xhrFields: {

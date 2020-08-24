@@ -25,7 +25,15 @@ namespace Vision.Controllers
         }
 
         [HttpPost]
-        public IActionResult Update()
+        public IActionResult UpdateManual()
+        {
+            _updateTDaysService.Update();
+
+            return Ok("Update TDate success");
+        }
+
+        [HttpPost]
+        public IActionResult UpdateAuto()
         {
             _updateTDaysService.Update();
 

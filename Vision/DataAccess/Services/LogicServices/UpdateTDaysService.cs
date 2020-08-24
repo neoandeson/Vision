@@ -36,7 +36,7 @@ namespace DataService.Services.LogicServices
                 DateTime today = DateTime.Now;
                 if (dt_lastUpdateTDate < today && dt_lastUpdateTDate.Day != today.Day)
                 {
-                    _buyOrderService.UpdateTDays();
+                    _buyOrderService.UpdateManualTDays();
                     _priceSectionService.UpdateAllInfo();
 
                     //_systemConfig.UpdateLastUpdateTDate(); TODO: uncomment
