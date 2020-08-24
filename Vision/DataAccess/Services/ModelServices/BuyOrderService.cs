@@ -121,9 +121,9 @@ namespace DataService.Services.ModelServices
 
             foreach (var order in activeBuyOrders)
             {
-                bool isSameDay = order.CreateDate.Day == DateTime.Now.Day;
-                bool isSameMonth = order.CreateDate.Month == DateTime.Now.Month;
-                bool isSameYear = order.CreateDate.Year == DateTime.Now.Year;
+                bool isSameDay = order.Date.Day == DateTime.Now.Day;
+                bool isSameMonth = order.Date.Month == DateTime.Now.Month;
+                bool isSameYear = order.Date.Year == DateTime.Now.Year;
 
                 if (order.MatchedVol != 0 && (!isSameDay || !isSameMonth || !isSameYear))
                 {

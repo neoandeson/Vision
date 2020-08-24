@@ -29,7 +29,7 @@ namespace Vision.Controllers
         {
             _updateTDaysService.Update();
 
-            return Ok("success");
+            return Ok("Update TDate success");
         }
     }
 }

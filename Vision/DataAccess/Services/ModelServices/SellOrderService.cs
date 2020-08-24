@@ -29,6 +29,10 @@ namespace DataService.Services.ModelServices
 
             SellOrder sellOrder = rqDTO.MapToModel(_authUserID);
 
+            sellOrder.CreateDate = DateTime.Now;
+            sellOrder.UpdateDate = DateTime.Now;
+            sellOrder.Status = SellOrderStatus.Active;
+
             _dbContext.SellOrder.Add(sellOrder);
             _dbContext.SaveChanges();
 

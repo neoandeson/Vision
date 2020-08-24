@@ -11,6 +11,7 @@ namespace DataService.Services.ModelServices
     public interface ISystemConfigService
     {
         SystemConfig Get();
+        void UpdateLastUpdateTDate();
     }
 
     public class SystemConfigService : ISystemConfigService
@@ -28,6 +29,17 @@ namespace DataService.Services.ModelServices
             SystemConfig systemConfig = _dbContext.SystemConfig.FirstOrDefault(c => c.Name == "LastUpdateTDate");
             
             return systemConfig;
+        }
+
+        public void UpdateLastUpdateTDate()
+        {
+            SystemConfig systemConfig = _dbContext.SystemConfig.FirstOrDefault(c => c.Name == "LastUpdateTDate");
+            if(systemConfig != null)
+            {
+                systemConfig.UpdateDate = DateTime.Now;
+
+                _dbContext.SaveChanges();
+            }
         }
     }
 }

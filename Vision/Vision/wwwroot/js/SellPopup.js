@@ -110,22 +110,26 @@ function ResetPriceSectionToSellTable() {
 }
 
 function SaveSellOut() {
-    var model = PrepareSellOutModel();
+    var arrSelectedPS = PrepareSelectedSection();
+    var sellOrderModel = PrepareSellOrderModel();
 
     $.ajax({
         url: 'http://localhost:54214/SellOrder/SellOut',
         method: "POST",
-        data: { rqVMs: model },
+        data: {
+            sellOrderDTO: sellOrderModel,
+            arrSelectedPS: arrSelectedPS
+        },
         xhrFields: {
             withCredentials: true
         },
         success: function (rs) {
-            alert(rs);
+            alert("Sell out success");
         }
     });
 }
 
-function PrepareSellOutModel() {
+function PrepareSelectedSection() {
     var arrSelectedPriceSection = [];
 
     $('#tbl_priceSectionToSell > tbody > tr').each(function (i, el) {
@@ -146,4 +150,22 @@ function PrepareSellOutModel() {
     });
 
     return arrSelectedPriceSection;
+}
+
+function PrepareSellOrderModel() {
+    var sellOrderDTO = {
+        Id: 0,
+        OrderNumber: $('#SO_Number').val(),
+        Date: $('#SO_Date').val(),
+        Symbol: $('#SO_Symbol').val(),
+        Volume: $('#SO_Volume').val(),
+        Price: $('#SO_Price').val(),
+        TradingFee: $('#SO_TradingFee').val(),
+        Tax: $('#SO_Tax').val(),
+        Value: 0,//Process at backend
+        Time: $('#SO_Time').val(),
+        Note: $('#SO_Note').val()
+    };
+
+    return sellOrderDTO;
 }

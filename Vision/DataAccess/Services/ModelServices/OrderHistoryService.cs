@@ -26,12 +26,14 @@ namespace DataService.Services.ModelServices
         {
             ServiceResponse<OrderHistoryDTO> rs = new ServiceResponse<OrderHistoryDTO>();
 
-            OrderHistory accountState = rqDTO.MapToModel(_authUserID);
+            OrderHistory orderHistory = rqDTO.MapToModel(_authUserID);
 
-            _dbContext.OrderHistory.Add(accountState);
+            orderHistory.CreateDate = DateTime.Now;
+
+            _dbContext.OrderHistory.Add(orderHistory);
             _dbContext.SaveChanges();
 
-            rs.Data = accountState.MapToDTO();
+            rs.Data = orderHistory.MapToDTO();
             rs.IsSuccess = true;
 
             return rs;

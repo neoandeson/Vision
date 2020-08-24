@@ -38,6 +38,8 @@ namespace DataService.Services.LogicServices
                 {
                     _buyOrderService.UpdateTDays();
                     _priceSectionService.UpdateAllInfo();
+
+                    //_systemConfig.UpdateLastUpdateTDate(); TODO: uncomment
                 }
             }
         }

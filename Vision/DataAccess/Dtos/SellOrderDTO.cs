@@ -31,7 +31,7 @@ namespace DataService.Dtos
                 Price = this.Price,
                 TradingFee = this.TradingFee,
                 Tax = this.Tax,
-                Value = this.Value,
+                Value = this.Volume * this.Price,
                 Time = this.Time,
                 Note = this.Note,
 

@@ -41,10 +41,12 @@ namespace Vision
             services.AddTransient<IPriceSectionService, PriceSectionService>();
             services.AddTransient<IBuyOrderService, BuyOrderService>();
             services.AddTransient<ISellOrderService, SellOrderService>();
+            services.AddTransient<IOrderHistoryService, OrderHistoryService>();
             services.AddTransient<ISystemConfigService, SystemConfigService>();
 
             //Add logic services
             services.AddTransient<IBuyInService, BuyInService>();
+            services.AddTransient<ISellOutService, SellOutService>();
             services.AddTransient<IUpdateTDaysService, UpdateTDaysService>();
         }
 
