@@ -163,16 +163,22 @@ namespace DataService.Services.ModelServices
                 switch (diffDate)
                 {
                     case 2:
-                        order.T0 = order.T1;
+                        order.T0 = order.Volume;
                         order.T1 = 0;
+                        order.T2 = 0;
+                        order.MatchedVol = 0;
                         break;
                     case 1:
-                        order.T1 = order.T2;
+                        order.T1 = order.Volume;
                         order.T2 = 0;
+                        order.T0 = 0;
+                        order.MatchedVol = 0;
                         break;
                     case 0:
-                        order.T2 = order.MatchedVol;
+                        order.T2 = order.Volume;
                         order.MatchedVol = 0;
+                        order.T0 = 0;
+                        order.T1 = 0;
                         break;
                     default: break;
                 }
