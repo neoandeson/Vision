@@ -3,16 +3,13 @@
   ViewData["Title"] = "Index";
 }
 
-<table id="accountState" class="display" style="width:100%">
+<table id="tbl_accountState" class="display" style="width:100%">
   <thead>
     <tr>
       <th>Symbol</th>
       <th>Current Value</th>
-      <th>Department</th>
       <th>Description</th>
       <th>Note</th>
-      <th>Total Buy</th>
-      <th>Total Sell</th>
       <th></th>
     </tr>
   </thead>
@@ -20,11 +17,8 @@
     <tr>
       <th>Symbol</th>
       <th>Current Value</th>
-      <th>Department</th>
       <th>Description</th>
       <th>Note</th>
-      <th>Total Buy</th>
-      <th>Total Sell</th>
       <th></th>
     </tr>
   </tfoot>
@@ -40,20 +34,17 @@
       },
       success: function (rs) {
         var ds = rs.data;
-        $('#accountState').DataTable({
+        $('#tbl_accountState').DataTable({
           "aaData": ds,
           "bProcessing": true,
           "columns": [
-            { "data": "symbol" },
-            { "data": "currentValue", "className": "dt-right" },
-            { "data": "department" },
+            { "data": "symbol", "width": "5%" },
+            { "data": "currentValue", "width": "10%", "className": "dt-right" },
             { "data": "description" },
             { "data": "note" },
-            { "data": "totalBuy", "className": "dt-right" },
-            { "data": "totalSell", "className": "dt-right" },
             {
-              "data": "id", render: function (data, type, row) {
-                return '<a href="PriceSection?id=' + data +'">View</a>';
+              "data": "id", "width": "5%", render: function (data, type, row) {
+                return '<a href="PriceSection?id=' + data + '">View</a>';
               }
             }
           ]

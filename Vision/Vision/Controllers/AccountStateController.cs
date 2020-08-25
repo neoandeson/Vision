@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DataService.Dtos;
 using DataService.Services.ModelServices;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,6 +25,16 @@ namespace Vision.Controllers
         public IActionResult GetAll()
         {
             return Json(_accountStateService.GetAll());
+        }
+
+        public IActionResult GetById(int id)
+        {
+            return Json(_accountStateService.Get(id));
+        }
+
+        public IActionResult Update(AccountStateDTO accountStateDTO)
+        {
+            return Json(_accountStateService.Update(accountStateDTO));
         }
     }
 }

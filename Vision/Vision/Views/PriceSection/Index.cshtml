@@ -4,7 +4,34 @@
 }
 
 <div class="row">
-  <div class="col-7">
+  <div class="col-12 box-shadow">
+    <table class="table">
+      <tr>
+        <td>Symbol:</td>
+        <td><span id="stateSymbol"></span></td>
+        <td>Department:</td>
+        <td><input id="stateDepartment" type="text" /></td>
+        <td>Type:</td>
+        <td><input id="stateType" type="number" /></td>
+      </tr>
+      <tr>
+        <td>Description:</td>
+        <td><textarea id="stateDescription" cols="50" rows="2"></textarea> </td>
+        <td>Note</td>
+        <td><textarea id="stateNote" cols="100" rows="2"></textarea></td>
+        <td></td>
+        <td>
+          <button type="button" class="btn btn-success" onclick="SaveAccountState()">
+            Save
+          </button>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="col-12 mt-1 mb-2" style="height: 2px;"></div>
+
+  <div class="col-7 box-shadow">
     <table id="tbl_priceSection" class="display" style="width:100%">
       <thead>
         <tr>
@@ -61,8 +88,10 @@
     </table>
   </div>
 </div>
+<script src="~/js/PriceSection.js"></script>
 <script>
   $(document).ready(function () {
+    LoadAccountStateDetail('@ViewData["AccountStateId"]');
     LoadPriceSection();
   });
 
@@ -70,67 +99,33 @@
     ClearDataTable('#tbl_priceSection');
 
     $.ajax({
-      url: 'http://localhost:54214/PriceSection/GetAllByAccoutStateId',
-      method: "POST",
-      data: {accountStateId: '@ViewData["AccountStateId"]'},
-      xhrFields: {
-        withCredentials: true
-      },
-      success: function (rs) {
-        var ds = rs.data;
-        $('#tbl_priceSection').DataTable({
-          "aaData": ds,
-          "bProcessing": true,
-          "columns": [
-            { "data": "price", "width": "5%", "className": "dt-right" },
-            { "data": "volume", "width": "10%", "className": "dt-right" },
-            { "data": "t0", "width": "5%", "className": "dt-right table-success" },
-            { "data": "t1", "width": "5%", "className": "dt-right" },
-            { "data": "t2", "width": "5%", "className": "dt-right" },
-            { "data": "matchedVol", "width": "10%", "className": "dt-right" },
-            { "data": "note" },
-            {
-              "data": "id", render: function (data, type, row) {
-                return '<button onclick="LoadBuyOrder(' + data + ')">View</button>';
-              }
-            }
-          ]
-        });
-      }
+        url: 'http://localhost:54214/PriceSection/GetAllByAccoutStateId',
+        method: "POST",
+        data: { accountStateId: '@ViewData["AccountStateId"]' },
+        xhrFields: {
+            withCredentials: true
+        },
+        success: function (rs) {
+            var ds = rs.data;
+            $('#tbl_priceSection').DataTable({
+                "aaData": ds,
+                "bProcessing": true,
+                "columns": [
+                    { "data": "price", "width": "5%", "className": "dt-right" },
+                    { "data": "volume", "width": "10%", "className": "dt-right" },
+                    { "data": "t0", "width": "5%", "className": "dt-right table-success" },
+                    { "data": "t1", "width": "5%", "className": "dt-right" },
+                    { "data": "t2", "width": "5%", "className": "dt-right" },
+                    { "data": "matchedVol", "width": "10%", "className": "dt-right" },
+                    { "data": "note" },
+                    {
+                        "data": "id", "width": "5%", render: function (data, type, row) {
+                            return '<button onclick="LoadBuyOrder(' + data + ')">View</button>';
+                        }
+                    }
+                ]
+            });
+        }
     });
   }
-
-  function LoadBuyOrder(priceSectionId) {
-    ClearDataTable('#tbl_buyOrder');
-
-      $.ajax({
-      url: 'http://localhost:54214/BuyOrder/GetAllByPriceSectionId',
-      method: "POST",
-        data: { priceSectionId: priceSectionId},
-      xhrFields: {
-        withCredentials: true
-      },
-      success: function (rs) {
-        var ds = rs.data;
-        $('#tbl_buyOrder').DataTable({
-          "aaData": ds,
-          "bProcessing": true,
-          "columns": [
-            { "data": "orderNumber", "width": "5%", "className": "dt-right" },
-            { "data": "volume", "className": "dt-right" },
-            { "data": "t0", "className": "dt-right" },
-            { "data": "t1", "className": "dt-right" },
-            { "data": "t2", "className": "dt-right" },
-            { "data": "matchedVol", "width": "5%", "className": "dt-right" },
-            { "data": "note" },
-            {
-              "data": "id", render: function (data, type, row) {
-                return '<a href="PriceSection/' + data +'">Detail</button>';
-              }
-            }
-          ]
-        });
-      }
-    });
-   }
 </script>
