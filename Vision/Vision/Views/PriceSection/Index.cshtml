@@ -1,92 +1,95 @@
 ﻿
 @{
-  ViewData["Title"] = "Index";
+    ViewData["Title"] = "Index";
 }
 
 <div class="row">
-  <div class="col-12 box-shadow">
-    <table class="table">
-      <tr>
-        <td>Symbol:</td>
-        <td><span id="stateSymbol"></span></td>
-        <td>Department:</td>
-        <td><input id="stateDepartment" type="text" /></td>
-        <td>Type:</td>
-        <td><input id="stateType" type="number" /></td>
-      </tr>
-      <tr>
-        <td>Description:</td>
-        <td><textarea id="stateDescription" cols="50" rows="2"></textarea> </td>
-        <td>Note</td>
-        <td><textarea id="stateNote" cols="100" rows="2"></textarea></td>
-        <td></td>
-        <td>
-          <button type="button" class="btn btn-success" onclick="SaveAccountState()">
-            Save
-          </button>
-        </td>
-      </tr>
-    </table>
-  </div>
+    <div class="col-12 box-shadow">
+        <h2><span class="badge badge-primary w-100 text-left">Account State Detail</span></h2>
+        <table class="table">
+            <tr>
+                <td>Symbol:</td>
+                <td><span id="stateSymbol"></span></td>
+                <td>Department:</td>
+                <td><input id="stateDepartment" type="text" class="form-control" /></td>
+                <td>Type:</td>
+                <td><input id="stateType" type="number" class="form-control" /></td>
+            </tr>
+            <tr>
+                <td>Description:</td>
+                <td><textarea id="stateDescription" cols="50" rows="2" class="form-control"></textarea> </td>
+                <td>Note</td>
+                <td><textarea id="stateNote" cols="100" rows="2" class="form-control"></textarea></td>
+                <td></td>
+                <td>
+                    <button type="button" class="btn btn-success" onclick="SaveAccountState()">
+                        Save
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </div>
 
-  <div class="col-12 mt-1 mb-2" style="height: 2px;"></div>
+    <div class="col-12 mt-1 mb-2" style="height: 2px;"></div>
 
-  <div class="col-7 box-shadow">
-    <table id="tbl_priceSection" class="display" style="width:100%">
-      <thead>
-        <tr>
-          <th>Price</th>
-          <th>Volume</th>
-          <th>T0</th>
-          <th>T1</th>
-          <th>T2</th>
-          <th>MachedVol</th>
-          <th>Note</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tfoot>
-        <tr>
-          <th>Price</th>
-          <th>Volume</th>
-          <th>T0</th>
-          <th>T1</th>
-          <th>T2</th>
-          <th>MachedVol</th>
-          <th>Note</th>
-          <th></th>
-        </tr>
-      </tfoot>
-    </table>
-  </div>
-  <div class="col-5">
-    <table id="tbl_buyOrder" class="display" style="width:100%">
-      <thead>
-        <tr>
-          <th>OrderNumber</th>
-          <th>Date</th>
-          <th>T0</th>
-          <th>T1</th>
-          <th>T2</th>
-          <th>MachedVol</th>
-          <th>Note</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tfoot>
-        <tr>
-          <th>OrderNumber</th>
-          <th>Date</th>
-          <th>T0</th>
-          <th>T1</th>
-          <th>T2</th>
-          <th>MachedVol</th>
-          <th>Note</th>
-          <th></th>
-        </tr>
-      </tfoot>
-    </table>
-  </div>
+    <div class="col-7 box-shadow">
+        <h2><span class="badge badge-info w-100 text-left">Price Section</span></h2>
+        <table id="tbl_priceSection" class="display" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Price</th>
+                    <th>Volume</th>
+                    <th>T0</th>
+                    <th>T1</th>
+                    <th>T2</th>
+                    <th>MachedVol</th>
+                    <th>Note</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <th>Price</th>
+                    <th>Volume</th>
+                    <th>T0</th>
+                    <th>T1</th>
+                    <th>T2</th>
+                    <th>MachedVol</th>
+                    <th>Note</th>
+                    <th></th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <div class="col-5 box-shadow">
+        <h2><span class="badge badge-info w-100 text-left">Orders</span></h2>
+        <table id="tbl_buyOrder" class="display" style="width:100%">
+            <thead>
+                <tr>
+                    <th>OrderNumber</th>
+                    <th>Date</th>
+                    <th>T0</th>
+                    <th>T1</th>
+                    <th>T2</th>
+                    <th>MachedVol</th>
+                    <th>Note</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <th>OrderNumber</th>
+                    <th>Date</th>
+                    <th>T0</th>
+                    <th>T1</th>
+                    <th>T2</th>
+                    <th>MachedVol</th>
+                    <th>Note</th>
+                    <th></th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
 </div>
 <script src="~/js/PriceSection.js"></script>
 <script>

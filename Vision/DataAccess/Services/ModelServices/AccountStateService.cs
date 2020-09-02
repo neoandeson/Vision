@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using static DataService.Utilities.Constants;
+using DataService.ViewModels;
 
 namespace DataService.Services.ModelServices
 {
@@ -12,6 +13,7 @@ namespace DataService.Services.ModelServices
     {
         AccountState GetBySymbol(string symbol);
         ServiceResponse<AccountState> CreateWithSymbol(string symbol);
+        ServiceResponse<AccountStateDTO> UpdateVM(AccountStateViewModel updateVM);
     }
 
     public class AccountStateService : IAccountStateService
@@ -131,6 +133,32 @@ namespace DataService.Services.ModelServices
             _dbContext.SaveChanges();
 
             rs.IsSuccess = true;
+
+            return rs;
+        }
+
+        public ServiceResponse<AccountStateDTO> UpdateVM(AccountStateViewModel updateVM)
+        {
+            ServiceResponse<AccountStateDTO> rs = new ServiceResponse<AccountStateDTO>();
+
+            AccountState accountState = _dbContext.AccountState.Find(updateVM.Id);
+            if (accountState == null)
+            {
+                rs.Data = null;
+                rs.IsSuccess = false;
+                rs.Message = "Account state symbol " + updateVM.Symbol + " is not existed";
+            }
+
+            accountState.Description = updateVM.Description;
+            accountState.Note = updateVM.Note;
+            accountState.Type = updateVM.Type;
+            accountState.Department = updateVM.Department;
+
+            _dbContext.AccountState.Update(accountState);
+            _dbContext.SaveChanges();
+
+            rs.IsSuccess = true;
+            rs.Message = ResponseMessage.UpdateAccountStateSuccessfully;
 
             return rs;
         }

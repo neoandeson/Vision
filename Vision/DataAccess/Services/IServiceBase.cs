@@ -20,5 +20,5 @@ namespace DataService.Services
         public T Data { get; set; }
     }
 
-    //Scaffold-DbContext "Server=DESKTOP-UH7HU37\TIENTPSQL;Database=PBSA;User ID=sa;Password=1234;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Force
+    //Scaffold-DbContext "Server=DESKTOP-UH7HU37\TIENTPSQL;Database=Vision;User ID=sa;Password=1234;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Force
 }

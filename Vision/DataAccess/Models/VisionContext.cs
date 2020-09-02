@@ -26,6 +26,8 @@ namespace DataService.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+                optionsBuilder.UseSqlServer("Server=DESKTOP-UH7HU37\\TIENTPSQL;Database=Vision;User ID=sa;Password=1234;Trusted_Connection=True;");
             }
         }
 
@@ -72,6 +74,8 @@ namespace DataService.Models
 
             modelBuilder.Entity<BuyOrder>(entity =>
             {
+                entity.Property(e => e.BuyDate).HasColumnType("datetime");
+
                 entity.Property(e => e.CreateDate).HasColumnType("datetime");
 
                 entity.Property(e => e.Date).HasColumnType("date");

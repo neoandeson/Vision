@@ -54,26 +54,21 @@ function LoadAccountStateDetail(accountStateId) {
 function SaveAccountState() {
     var model = {
         Id: 0,
-        Symbol: $('#BO_Symbol').val(),
-        Description: $('#BO_Number').val(),
-        Note: $('#BO_Date').val(),
-        Type: $('#BO_Time').val(),
-        Department: $('#BO_InvestType').val()
+        Description: $('#stateDescription').val(),
+        Note: $('#stateNote').val(),
+        Type: $('#stateType').val(),
+        Department: $('#stateDepartment').val()
     };
 
     $.ajax({
         url: 'http://localhost:54214/AccountState/Update',
         method: "POST",
-        data: { model: model },
+        data: { updateVM: model },
         xhrFields: {
             withCredentials: true
         },
         success: function (rs) {
-            $('#stateSymbol').text(rs.Symbol);
-            $('#stateDepartment').text(rs.Symbol);
-            $('#stateType').text(rs.Symbol);
-            $('#stateDescription').text(rs.Symbol);
-            $('#stateNote').text(rs.Symbol);
+            alert(rs.Message)
         }
     });
 }

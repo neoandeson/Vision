@@ -21,6 +21,7 @@ namespace DataService.Models
         public int T0 { get; set; }
         public string Note { get; set; }
         public int TimerSellDays { get; set; }
+        public DateTime BuyDate { get; set; }
         public int Sold { get; set; }
         public int UserId { get; set; }
         public DateTime CreateDate { get; set; }

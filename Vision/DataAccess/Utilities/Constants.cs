@@ -40,6 +40,7 @@ namespace DataService.Utilities
         {
             public static string BuyInSuccessfully = "Buy In Successfully";
             public static string SellOutSuccessfully = "Sell Out Successfully";
+            public static string UpdateAccountStateSuccessfully = "Update Account State Successfully";
         }
     }
 }

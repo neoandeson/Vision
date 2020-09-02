@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using DataService.Dtos;
 using DataService.Services.ModelServices;
+using DataService.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Vision.Controllers
@@ -32,9 +33,9 @@ namespace Vision.Controllers
             return Json(_accountStateService.Get(id));
         }
 
-        public IActionResult Update(AccountStateDTO accountStateDTO)
+        public IActionResult Update(AccountStateViewModel updateVM)
         {
-            return Json(_accountStateService.Update(accountStateDTO));
+            return Json(_accountStateService.UpdateVM(updateVM));
         }
     }
 }

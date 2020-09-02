@@ -23,6 +23,7 @@ namespace DataService.Dtos
         public int T0 { get; set; }
         public string Note { get; set; }
         public int TimerSellDays { get; set; }
+        public DateTime BuyDate { get; set; }
         public int Sold { get; set; }
 
         public BuyOrder MapToModel(int authUserId)
@@ -45,6 +46,7 @@ namespace DataService.Dtos
                 T0 = this.T0,
                 Note = this.Note,
                 TimerSellDays = this.TimerSellDays,
+                BuyDate = new DateTime(this.Date.Year, this.Date.Month, this.Date.Day, this.Time % 10000, 0, 0),
                 Sold = this.Sold,
 
                 UserId = authUserId
