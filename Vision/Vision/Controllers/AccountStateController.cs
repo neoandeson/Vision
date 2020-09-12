@@ -35,7 +35,7 @@ namespace Vision.Controllers
 
         public IActionResult Update(AccountStateViewModel updateVM)
         {
-            return Json(_accountStateService.UpdateVM(updateVM));
+            return Json(_accountStateService.UpdateWithVM(updateVM));
         }
     }
 }

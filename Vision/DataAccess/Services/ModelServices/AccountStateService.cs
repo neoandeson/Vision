@@ -13,7 +13,7 @@ namespace DataService.Services.ModelServices
     {
         AccountState GetBySymbol(string symbol);
         ServiceResponse<AccountState> CreateWithSymbol(string symbol);
-        ServiceResponse<AccountStateDTO> UpdateVM(AccountStateViewModel updateVM);
+        ServiceResponse<AccountStateDTO> UpdateWithVM(AccountStateViewModel updateVM);
     }
 
     public class AccountStateService : IAccountStateService
@@ -105,7 +105,7 @@ namespace DataService.Services.ModelServices
         {
             ServiceResponse<List<AccountStateDTO>> rs = new ServiceResponse<List<AccountStateDTO>>();
 
-            rs.Data = _dbContext.AccountState.AsQueryable().Select(x => x.MapToDTO()).ToList();
+            rs.Data = _dbContext.AccountState.OrderBy(x => x.CurrentValue).AsQueryable().Select(x => x.MapToDTO()).ToList();
             rs.IsSuccess = true;
 
             return rs;
@@ -137,7 +137,7 @@ namespace DataService.Services.ModelServices
             return rs;
         }
 
-        public ServiceResponse<AccountStateDTO> UpdateVM(AccountStateViewModel updateVM)
+        public ServiceResponse<AccountStateDTO> UpdateWithVM(AccountStateViewModel updateVM)
         {
             ServiceResponse<AccountStateDTO> rs = new ServiceResponse<AccountStateDTO>();
 

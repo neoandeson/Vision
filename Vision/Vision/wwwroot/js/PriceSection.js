@@ -42,6 +42,7 @@ function LoadAccountStateDetail(accountStateId) {
         },
         success: function (rs) {
             var data = rs.data;
+            $('#stateId').val(data.id);
             $('#stateSymbol').text(data.symbol);
             $('#stateDepartment').val(data.department);
             $('#stateType').val(data.type);
@@ -53,7 +54,7 @@ function LoadAccountStateDetail(accountStateId) {
 
 function SaveAccountState() {
     var model = {
-        Id: 0,
+        Id: $('#stateId').val(),
         Description: $('#stateDescription').val(),
         Note: $('#stateNote').val(),
         Type: $('#stateType').val(),
