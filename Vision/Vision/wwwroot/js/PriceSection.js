@@ -2,7 +2,7 @@
     ClearDataTable('#tbl_buyOrder');
 
     $.ajax({
-        url: 'http://localhost:54214/BuyOrder/GetAllByPriceSectionId',
+        url: WebURL + 'BuyOrder/GetAllByPriceSectionId',
         method: "POST",
         data: { priceSectionId: priceSectionId },
         xhrFields: {
@@ -34,7 +34,7 @@
 
 function LoadAccountStateDetail(accountStateId) {
     $.ajax({
-        url: 'http://localhost:54214/AccountState/GetById',
+        url: WebURL + 'AccountState/GetById',
         method: "POST",
         data: { id: accountStateId },
         xhrFields: {
@@ -62,7 +62,7 @@ function SaveAccountState() {
     };
 
     $.ajax({
-        url: 'http://localhost:54214/AccountState/Update',
+        url: WebURL + 'AccountState/Update',
         method: "POST",
         data: { updateVM: model },
         xhrFields: {

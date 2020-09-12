@@ -11,3 +11,6 @@ function ClearDataTable(tableId) {
     //destroy datatable
     dataTable.destroy();
 }
+
+//Constant
+const WebURL = 'http://localhost:91/';

@@ -13,7 +13,7 @@
 
 function SaveBuyIn() {
     $.ajax({
-        url: 'http://localhost:54214/BuyOrder/BuyIn',
+        url: WebURL + 'BuyOrder/BuyIn',
         method: "POST",
         data: { rqDto: PrepareBuyInModel() },
         xhrFields: {

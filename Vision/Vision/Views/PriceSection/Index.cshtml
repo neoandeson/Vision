@@ -103,7 +103,7 @@
     ClearDataTable('#tbl_priceSection');
 
     $.ajax({
-        url: 'http://localhost:54214/PriceSection/GetAllByAccoutStateId',
+        url: WebURL + 'PriceSection/GetAllByAccoutStateId',
         method: "POST",
         data: { accountStateId: '@ViewData["AccountStateId"]' },
         xhrFields: {

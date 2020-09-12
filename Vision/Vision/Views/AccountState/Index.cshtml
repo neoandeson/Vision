@@ -1,55 +1,55 @@
 ﻿
 @{
-  ViewData["Title"] = "Index";
+    ViewData["Title"] = "Index";
 }
 
 <table id="tbl_accountState" class="display" style="width:100%">
-  <thead>
-    <tr>
-      <th>Symbol</th>
-      <th>Current Value</th>
-      <th>Description</th>
-      <th>Note</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tfoot>
-    <tr>
-      <th>Symbol</th>
-      <th>Current Value</th>
-      <th>Description</th>
-      <th>Note</th>
-      <th></th>
-    </tr>
-  </tfoot>
+    <thead>
+        <tr>
+            <th>Symbol</th>
+            <th>Current Value</th>
+            <th>Description</th>
+            <th>Note</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <th>Symbol</th>
+            <th>Current Value</th>
+            <th>Description</th>
+            <th>Note</th>
+            <th></th>
+        </tr>
+    </tfoot>
 </table>
 
 <script>
-  $(document).ready(function () {
-    $.ajax({
-      url: 'http://localhost/AccountState/GetAll',
-      method: "GET",
-      xhrFields: {
-        withCredentials: true
-      },
-      success: function (rs) {
-        var ds = rs.data;
-        $('#tbl_accountState').DataTable({
-          "aaData": ds,
-          "bProcessing": true,
-          "columns": [
-            { "data": "symbol", "width": "5%" },
-            { "data": "currentValue", "width": "10%", "className": "dt-right" },
-            { "data": "description" },
-            { "data": "note" },
-            {
-              "data": "id", "width": "5%", render: function (data, type, row) {
-                return '<a href="PriceSection?id=' + data + '">View</a>';
-              }
+    $(document).ready(function () {
+        $.ajax({
+            url: WebURL + 'AccountState/GetAll',
+            method: "GET",
+            xhrFields: {
+                withCredentials: true
+            },
+            success: function (rs) {
+                var ds = rs.data;
+                $('#tbl_accountState').DataTable({
+                    "aaData": ds,
+                    "bProcessing": true,
+                    "columns": [
+                        { "data": "symbol", "width": "5%" },
+                        { "data": "currentValue", "width": "10%", "className": "dt-right" },
+                        { "data": "description" },
+                        { "data": "note" },
+                        {
+                            "data": "id", "width": "5%", render: function (data, type, row) {
+                                return '<a href="PriceSection?id=' + data + '">View</a>';
+                            }
+                        }
+                    ]
+                });
             }
-          ]
         });
-      }
     });
-  });
 </script>

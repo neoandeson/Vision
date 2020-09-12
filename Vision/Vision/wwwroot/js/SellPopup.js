@@ -50,7 +50,7 @@ function UnApplySelectedPriceSection(tdcolBalance, ps_notAssigned, tdcolAvailabl
 
 function LoadPriceSectionToSell(symbol) {
     $.ajax({
-        url: 'http://localhost:54214/PriceSection/GetAllBySymbol',
+        url: WebURL + 'PriceSection/GetAllBySymbol',
         method: "POST",
         data: { symbol: symbol },
         xhrFields: {
@@ -114,7 +114,7 @@ function SaveSellOut() {
     var sellOrderModel = PrepareSellOrderModel();
 
     $.ajax({
-        url: 'http://localhost:54214/SellOrder/SellOut',
+        url: WebURL + 'SellOrder/SellOut',
         method: "POST",
         data: {
             sellOrderDTO: sellOrderModel,
