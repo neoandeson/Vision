@@ -17,12 +17,14 @@ namespace DataService.Services.LogicServices
     {
         private readonly IBuyOrderService _buyOrderService;
         private readonly IPriceSectionService _priceSectionService;
+        private readonly IHolidayService _holidayService;
         private readonly ISystemConfigService _systemConfig;
 
-        public UpdateTDaysService(IBuyOrderService buyOrderService, IPriceSectionService priceSectionService, ISystemConfigService systemConfig)
+        public UpdateTDaysService(IBuyOrderService buyOrderService, IPriceSectionService priceSectionService, ISystemConfigService systemConfig, IHolidayService holidayService)
         {
             _buyOrderService = buyOrderService;
             _priceSectionService = priceSectionService;
+            _holidayService = holidayService;
             _systemConfig = systemConfig;
         }
 
@@ -34,6 +36,10 @@ namespace DataService.Services.LogicServices
             {
                 DateTime dt_lastUpdateTDate = lastUpdateTDate.UpdateDate.Value;
                 DateTime today = DateTime.Now;
+
+                //Not update in holiday
+                if (_holidayService.CheckDayIsHoliday(today)) return;
+
                 if (dt_lastUpdateTDate < today && dt_lastUpdateTDate.Day != today.Day)
                 {
                     _buyOrderService.UpdateManualTDays();
