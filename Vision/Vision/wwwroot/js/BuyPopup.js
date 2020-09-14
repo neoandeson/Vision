@@ -9,6 +9,14 @@
     $('#BO_Time').val('');
     $('#BO_Note').val('');
     $('#BO_TimerSellDays').val('2');
+    InitElements();
+}
+
+function InitElements() {
+    $("#BO_Date").datepicker({
+        changeMonth: true,
+        changeYear: true
+    });
 }
 
 function SaveBuyIn() {
