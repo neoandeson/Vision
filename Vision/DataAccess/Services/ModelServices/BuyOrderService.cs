@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using static DataService.Utilities.Constants;
+using DataService.Utilities;
 
 namespace DataService.Services.ModelServices
 {
@@ -122,30 +123,35 @@ namespace DataService.Services.ModelServices
 
             foreach (var order in activeBuyOrders)
             {
-                bool isSameDay = order.Date.Day == DateTime.Now.Day;
-                bool isSameMonth = order.Date.Month == DateTime.Now.Month;
-                bool isSameYear = order.Date.Year == DateTime.Now.Year;
+                int diffDate = ModelUtils.BusinessDaysUntil(order.Date, DateTime.Now);
 
-                if (order.MatchedVol != 0 && (!isSameDay || !isSameMonth || !isSameYear))
+                switch (diffDate)
                 {
-                    order.T2 = order.MatchedVol;
-                    order.MatchedVol = 0;
-                }
-                else if (order.T2 != 0)
-                {
-                    order.T1 = order.T2;
-                    order.T2 = 0;
-                }
-                else if (order.T1 != 0)
-                {
-                    order.T0 = order.T1;
-                    order.T1 = 0;
+                    case 2:
+                        order.T0 = order.Volume;
+                        order.T1 = 0;
+                        order.T2 = 0;
+                        order.MatchedVol = 0;
+                        break;
+                    case 1:
+                        order.T1 = order.Volume;
+                        order.T2 = 0;
+                        order.T0 = 0;
+                        order.MatchedVol = 0;
+                        break;
+                    case 0:
+                        order.T2 = order.Volume;
+                        order.MatchedVol = 0;
+                        order.T0 = 0;
+                        order.T1 = 0;
+                        break;
+                    default: break;
                 }
 
-                _dbContext.BuyOrder.Update(order);
+                //_dbContext.BuyOrder.Update(order);
             }
 
-            _dbContext.SaveChanges();
+            //_dbContext.SaveChanges();
         }
 
         public void UpdateAutoTDays()
@@ -158,7 +164,7 @@ namespace DataService.Services.ModelServices
 
             foreach (var order in activeBuyOrders)
             {
-                int diffDate = (int)(DateTime.Now - order.Date).TotalDays;
+                int diffDate = ModelUtils.BusinessDaysUntil(order.Date, DateTime.Now);
 
                 switch (diffDate)
                 {

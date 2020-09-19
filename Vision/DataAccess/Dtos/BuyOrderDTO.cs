@@ -46,7 +46,7 @@ namespace DataService.Dtos
                 T0 = this.T0,
                 Note = this.Note,
                 TimerSellDays = this.TimerSellDays,
-                BuyDate = new DateTime(this.Date.Year, this.Date.Month, this.Date.Day, this.Time % 10000, 0, 0),
+                BuyDate = this.BuyDate,
                 Sold = this.Sold,
 
                 UserId = authUserId

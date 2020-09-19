@@ -3,6 +3,11 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
+  
+  <Target Name="CreateLogsFolder" AfterTargets="Publish">
+    <MakeDir Directories="$(PublishDir)logs" 
+              Condition="!Exists('$(PublishDir)logs')" />
+  </Target>
 
   <ItemGroup>
     <PackageReference Include="Hangfire.AspNetCore" Version="1.7.12" />

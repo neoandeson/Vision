@@ -34,7 +34,12 @@ namespace Vision
             services.AddDbContext<VisionContext>(
                 option => option.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddHangfire(x => x.UseSqlServerStorage(Configuration.GetConnectionString("HangfireConnection")));
+            services.AddHangfire(x => x.UseSqlServerStorage(
+                Configuration.GetConnectionString("HangfireConnection"), 
+                new SqlServerStorageOptions
+                {
+                    PrepareSchemaIfNecessary = true
+                }));
 
             //Add model services
             services.AddTransient<IAccountStateService, AccountStateService>();

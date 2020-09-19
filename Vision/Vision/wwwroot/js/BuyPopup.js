@@ -32,6 +32,7 @@ function PrepareBuyInModel() {
         Symbol: $('#BO_Symbol').val(),
         OrderNumber: $('#BO_Number').val(),
         Date: $('#BO_Date').val(),
+        BuyDate: $('#BO_Date').val(),
         Time: $('#BO_Time').val(),
         InvestType: $('#BO_InvestType').val(),
         Volume: $('#BO_Volume').val(),
