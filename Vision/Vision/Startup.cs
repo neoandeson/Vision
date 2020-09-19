@@ -48,6 +48,7 @@ namespace Vision
             services.AddTransient<ISellOrderService, SellOrderService>();
             services.AddTransient<IOrderHistoryService, OrderHistoryService>();
             services.AddTransient<ISystemConfigService, SystemConfigService>();
+            services.AddTransient<IHolidayService, HolidayService>();
 
             //Add logic services
             services.AddTransient<IBuyInService, BuyInService>();

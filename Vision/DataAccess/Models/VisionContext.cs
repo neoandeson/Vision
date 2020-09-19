@@ -17,6 +17,7 @@ namespace DataService.Models
 
         public virtual DbSet<AccountState> AccountState { get; set; }
         public virtual DbSet<BuyOrder> BuyOrder { get; set; }
+        public virtual DbSet<Holiday> Holiday { get; set; }
         public virtual DbSet<OrderHistory> OrderHistory { get; set; }
         public virtual DbSet<PriceSection> PriceSection { get; set; }
         public virtual DbSet<SellOrder> SellOrder { get; set; }
@@ -27,7 +28,7 @@ namespace DataService.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=DESKTOP-UH7HU37\\TIENTPSQL;Database=Vision;User ID=sa;Password=1234;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=.;Database=Vision;User ID=sa;Password=1234;Trusted_Connection=True;");
             }
         }
 
@@ -74,8 +75,6 @@ namespace DataService.Models
 
             modelBuilder.Entity<BuyOrder>(entity =>
             {
-                entity.Property(e => e.BuyDate).HasColumnType("datetime");
-
                 entity.Property(e => e.CreateDate).HasColumnType("datetime");
 
                 entity.Property(e => e.Date).HasColumnType("date");
@@ -95,6 +94,15 @@ namespace DataService.Models
                 entity.Property(e => e.TradingFee).HasColumnType("money");
 
                 entity.Property(e => e.UpdateDate).HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<Holiday>(entity =>
+            {
+                entity.Property(e => e.DateTime).HasColumnType("datetime");
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(50);
             });
 
             modelBuilder.Entity<OrderHistory>(entity =>
