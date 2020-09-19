@@ -16,6 +16,7 @@ namespace DataService.Models
                 Symbol = this.Symbol,
                 OrderNumber = this.OrderNumber,
                 Date = this.Date,
+                BuyDate = this.BuyDate,
                 Time = this.Time,
                 InvestType = this.InvestType,
                 Volume = this.Volume,

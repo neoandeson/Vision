@@ -15,7 +15,11 @@
                 "bProcessing": true,
                 "columns": [
                     { "data": "orderNumber", "width": "5%", "className": "dt-right" },
-                    { "data": "volume", "className": "dt-right" },
+                    {
+                        "data": "date", "className": "dt-right", render: function (data, type, row) {
+                            return data.slice(0, 10);
+                        }
+                    },
                     { "data": "t0", "className": "dt-right" },
                     { "data": "t1", "className": "dt-right" },
                     { "data": "t2", "className": "dt-right" },

@@ -19,7 +19,7 @@ namespace Vision.Controllers
 
         public IActionResult Index()
         {
-            RecurringJob.AddOrUpdate(() => _updateTDaysService.Update() , "*/1 * * * *", TimeZoneInfo.Local);
+            RecurringJob.AddOrUpdate(() => _updateTDaysService.Update() , "* 6 * * *", TimeZoneInfo.Local);
 
             return RedirectToAction("", "Hangfire");
         }

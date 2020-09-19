@@ -22,11 +22,13 @@ namespace DataService.Services.ModelServices
     public class BuyOrderService : IBuyOrderService
     {
         private readonly VisionContext _dbContext;
+        private readonly IHolidayService _holidayService;
         private readonly int _authUserID = CurrentUser.AuthUserID;
 
-        public BuyOrderService(VisionContext dbContext)
+        public BuyOrderService(VisionContext dbContext, IHolidayService holidayService)
         {
             _dbContext = dbContext;
+            _holidayService = holidayService;
         }
 
         public ServiceResponse<BuyOrderDTO> Create(BuyOrderDTO rqDTO)
@@ -120,74 +122,93 @@ namespace DataService.Services.ModelServices
         public void UpdateManualTDays()
         {
             var activeBuyOrders = _dbContext.BuyOrder.Where(o => o.Status == BuyOrderStatus.Active).ToList();
+            var holidays = _holidayService.GetAllHolidays();
 
             foreach (var order in activeBuyOrders)
             {
-                int diffDate = ModelUtils.BusinessDaysUntil(order.Date, DateTime.Now);
+                int diffDate = ModelUtils.BusinessDaysUntil(order.Date, DateTime.Now, holidays);
 
-                switch (diffDate)
+                if(diffDate > 3)
                 {
-                    case 2:
-                        order.T0 = order.Volume;
-                        order.T1 = 0;
-                        order.T2 = 0;
-                        order.MatchedVol = 0;
-                        break;
-                    case 1:
-                        order.T1 = order.Volume;
-                        order.T2 = 0;
-                        order.T0 = 0;
-                        order.MatchedVol = 0;
-                        break;
-                    case 0:
-                        order.T2 = order.Volume;
-                        order.MatchedVol = 0;
-                        order.T0 = 0;
-                        order.T1 = 0;
-                        break;
-                    default: break;
+                    order.T0 = order.Volume;
+                    order.T1 = 0;
+                    order.T2 = 0;
+                    order.MatchedVol = 0;
+                } else
+                {
+                    switch (diffDate)
+                    {
+                        case 3:
+                            order.T0 = order.Volume;
+                            order.T1 = 0;
+                            order.T2 = 0;
+                            order.MatchedVol = 0;
+                            break;
+                        case 2:
+                            order.T1 = order.Volume;
+                            order.T2 = 0;
+                            order.T0 = 0;
+                            order.MatchedVol = 0;
+                            break;
+                        case 1:
+                            order.T2 = order.Volume;
+                            order.MatchedVol = 0;
+                            order.T0 = 0;
+                            order.T1 = 0;
+                            break;
+                        default: break;
+                    }
                 }
+                
 
-                //_dbContext.BuyOrder.Update(order);
+                _dbContext.BuyOrder.Update(order);
             }
 
-            //_dbContext.SaveChanges();
+            _dbContext.SaveChanges();
         }
 
         public void UpdateAutoTDays()
         {
             var activeBuyOrders = _dbContext.BuyOrder.Where(o => o.Status == BuyOrderStatus.Active).ToList();
-
-            //Not update on Saturday and Sunday
-            DayOfWeek today = DateTime.Now.DayOfWeek;
-            if (today == DayOfWeek.Saturday || today == DayOfWeek.Sunday) return;
+            var holidays = _holidayService.GetAllHolidays();
 
             foreach (var order in activeBuyOrders)
             {
-                int diffDate = ModelUtils.BusinessDaysUntil(order.Date, DateTime.Now);
+                int diffDate = ModelUtils.BusinessDaysUntil(order.Date, DateTime.Now, holidays);
 
-                switch (diffDate)
+                if (diffDate > 3)
                 {
-                    case 2:
-                        order.T0 = order.Volume;
-                        order.T1 = 0;
-                        order.T2 = 0;
-                        order.MatchedVol = 0;
-                        break;
-                    case 1:
-                        order.T1 = order.Volume;
-                        order.T2 = 0;
-                        order.T0 = 0;
-                        order.MatchedVol = 0;
-                        break;
-                    case 0:
-                        order.T2 = order.Volume;
-                        order.MatchedVol = 0;
-                        order.T0 = 0;
-                        order.T1 = 0;
-                        break;
-                    default: break;
+                    order.T0 = order.Volume;
+                    order.T1 = 0;
+                    order.T2 = 0;
+                    order.MatchedVol = 0;
                 }
+                else
+                {
+                    switch (diffDate)
+                    {
+                        case 3:
+                            order.T0 = order.Volume;
+                            order.T1 = 0;
+                            order.T2 = 0;
+                            order.MatchedVol = 0;
+                            break;
+                        case 2:
+                            order.T1 = order.Volume;
+                            order.T2 = 0;
+                            order.T0 = 0;
+                            order.MatchedVol = 0;
+                            break;
+                        case 1:
+                            order.T2 = order.Volume;
+                            order.MatchedVol = 0;
+                            order.T0 = 0;
+                            order.T1 = 0;
+                            break;
+                        default: break;
+                    }
+                }
+
 
                 _dbContext.BuyOrder.Update(order);
             }

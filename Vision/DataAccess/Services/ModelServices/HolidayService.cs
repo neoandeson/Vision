@@ -9,6 +9,7 @@ namespace DataService.Services.ModelServices
     public interface IHolidayService : IServiceBase<DateTime, bool>
     {
         bool CheckDayIsHoliday(DateTime checkDate);
+        DateTime[] GetAllHolidays();
     }
 
     public class HolidayService : IHolidayService
@@ -47,6 +48,11 @@ namespace DataService.Services.ModelServices
         public ServiceResponse<List<bool>> GetAll()
         {
             throw new NotImplementedException();
+        }
+
+        public DateTime[] GetAllHolidays()
+        {
+            return _dbContext.Holiday.Select(h => h.DateTime).ToArray();
         }
 
         public ServiceResponse<bool> Update(DateTime rqDTO)
