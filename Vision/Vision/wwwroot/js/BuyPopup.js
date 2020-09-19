@@ -14,6 +14,7 @@
 
 function InitElements() {
     $("#BO_Date").datepicker({
+        format: 'MM/DD/YYYY',
         changeMonth: true,
         changeYear: true
     });
