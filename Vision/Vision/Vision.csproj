@@ -5,11 +5,11 @@
   </PropertyGroup>
   
   <Target Name="CreateLogsFolder" AfterTargets="Publish">
-    <MakeDir Directories="$(PublishDir)logs" 
-              Condition="!Exists('$(PublishDir)logs')" />
+    <MakeDir Directories="$(PublishDir)logs" Condition="!Exists('$(PublishDir)logs')" />
   </Target>
 
   <ItemGroup>
+    <PackageReference Include="ExcelDataReader" Version="3.6.0" />
     <PackageReference Include="Hangfire.AspNetCore" Version="1.7.12" />
     <PackageReference Include="Hangfire.SqlServer" Version="1.7.12" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.6" />

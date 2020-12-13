@@ -15,25 +15,42 @@ namespace DataService.Models
         {
         }
 
+        public virtual DbSet<Account> Account { get; set; }
         public virtual DbSet<AccountState> AccountState { get; set; }
         public virtual DbSet<BuyOrder> BuyOrder { get; set; }
+        public virtual DbSet<Diary> Diary { get; set; }
         public virtual DbSet<Holiday> Holiday { get; set; }
+        public virtual DbSet<Order> Order { get; set; }
+        public virtual DbSet<OrderHis> OrderHis { get; set; }
         public virtual DbSet<OrderHistory> OrderHistory { get; set; }
         public virtual DbSet<PriceSection> PriceSection { get; set; }
         public virtual DbSet<SellOrder> SellOrder { get; set; }
+        public virtual DbSet<StockSymbol> StockSymbol { get; set; }
         public virtual DbSet<SystemConfig> SystemConfig { get; set; }
+        public virtual DbSet<Transaction> Transaction { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=.;Database=Vision;User ID=sa;Password=1234;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=DESKTOP-UH7HU37\\TIENTPSQL;Database=Vision;User ID=sa;Password=1234;Trusted_Connection=True;");
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Account>(entity =>
+            {
+                entity.Property(e => e.Company)
+                    .IsRequired()
+                    .HasMaxLength(7);
+
+                entity.Property(e => e.Number)
+                    .IsRequired()
+                    .HasMaxLength(10);
+            });
+
             modelBuilder.Entity<AccountState>(entity =>
             {
                 entity.Property(e => e.CreateDate).HasColumnType("datetime");
@@ -75,6 +92,8 @@ namespace DataService.Models
 
             modelBuilder.Entity<BuyOrder>(entity =>
             {
+                entity.Property(e => e.BuyDate).HasColumnType("datetime");
+
                 entity.Property(e => e.CreateDate).HasColumnType("datetime");
 
                 entity.Property(e => e.Date).HasColumnType("date");
@@ -96,6 +115,15 @@ namespace DataService.Models
                 entity.Property(e => e.UpdateDate).HasColumnType("datetime");
             });
 
+            modelBuilder.Entity<Diary>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.Property(e => e.Note).HasMaxLength(300);
+
+                entity.Property(e => e.RecordTime).HasColumnType("datetime");
+            });
+
             modelBuilder.Entity<Holiday>(entity =>
             {
                 entity.Property(e => e.DateTime).HasColumnType("datetime");
@@ -103,6 +131,36 @@ namespace DataService.Models
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<Order>(entity =>
+            {
+                entity.Property(e => e.MatchTime).HasColumnType("datetime");
+
+                entity.Property(e => e.Note).HasMaxLength(100);
+
+                entity.Property(e => e.OrderNumber)
+                    .IsRequired()
+                    .HasMaxLength(16);
+
+                entity.Property(e => e.SymbolName)
+                    .IsRequired()
+                    .HasMaxLength(10);
+            });
+
+            modelBuilder.Entity<OrderHis>(entity =>
+            {
+                entity.Property(e => e.MatchTime).HasColumnType("datetime");
+
+                entity.Property(e => e.Note).HasMaxLength(100);
+
+                entity.Property(e => e.OrderNumber)
+                    .IsRequired()
+                    .HasMaxLength(16);
+
+                entity.Property(e => e.SymbolName)
+                    .IsRequired()
+                    .HasMaxLength(10);
             });
 
             modelBuilder.Entity<OrderHistory>(entity =>
@@ -172,6 +230,13 @@ namespace DataService.Models
                 entity.Property(e => e.Value).HasColumnType("money");
             });
 
+            modelBuilder.Entity<StockSymbol>(entity =>
+            {
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(10);
+            });
+
             modelBuilder.Entity<SystemConfig>(entity =>
             {
                 entity.Property(e => e.Description).HasMaxLength(50);
@@ -186,6 +251,13 @@ namespace DataService.Models
                     .IsUnicode(false);
 
                 entity.Property(e => e.UpdateDate).HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<Transaction>(entity =>
+            {
+                entity.Property(e => e.Note).HasMaxLength(200);
+
+                entity.Property(e => e.RecordTime).HasColumnType("datetime");
             });
 
             OnModelCreatingPartial(modelBuilder);
