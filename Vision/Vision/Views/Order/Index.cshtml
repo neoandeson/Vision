@@ -1,38 +1,22 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Order";
 }
 
-<form id="form" name="form" action="/uploader" enctype="multipart/form-data" method="post">
-    <div class="buttons">
-        <div class="upload-button">
-            <div class="label">Click me!</div>
-            <input id="files" name="files" type="file" size="1" multiple onchange="uploadFiles('files');" />
-        </div>
+
+<form id="form1" method="post" action="/Order/ImportOrderFromExcel" enctype="multipart/form-data">
+    <div class="text-center">
+        <select id="companyId" name="CompanyId">
+            <option value="1">VNDirect</option>
+            <option value="2">VPS</option>
+            <option value="3">DNSE</option>
+        </select>
+        <input type="file" id="file1" name="UploadedFile" />
+        <button type="button" id="btUpload">Upload</button>
     </div>
 </form>
 
 <script>
-    function uploadFiles(inputId) {
-        var input = document.getElementById(inputId);
-        var files = input.files;
-        var formData = new FormData();
-
-        for (var i = 0; i != files.length; i++) {
-            formData.append("files", files[i]);
-        }
-
-        $.ajax(
-            {
-                url: "/Order/ImportOrderFromExcel",
-                data: { file: formData, companyName: "VND" },
-                processData: false,
-                contentType: JSON,
-                type: "POST",
-                success: function (data) {
-                    alert("Files Uploaded!");
-                }
-            }
-        );
-    }
+    document.getElementById('btUpload').onclick = function () {
+        document.getElementById('form1').submit();
+    };
 </script>

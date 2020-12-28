@@ -41,6 +41,9 @@ namespace DataService.Utilities
             public static string BuyInSuccessfully = "Buy In Successfully";
             public static string SellOutSuccessfully = "Sell Out Successfully";
             public static string UpdateAccountStateSuccessfully = "Update Account State Successfully";
+
+            public static string ImportOrderFromExcel_VPS_Sucess = "Import order history from VPS excel successfully";
+            public static string ImportOrderFromExcel_VPS_Fail = "Import order history from VPS excel fail";
         }
     }
 }

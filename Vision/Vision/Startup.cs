@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Hangfire;
 using Hangfire.SqlServer;
+using DataService.Services.ImportExcelServices;
 
 namespace Vision
 {
@@ -55,6 +56,9 @@ namespace Vision
             services.AddTransient<IBuyInService, BuyInService>();
             services.AddTransient<ISellOutService, SellOutService>();
             services.AddTransient<IUpdateTDaysService, UpdateTDaysService>();
+
+            //Add import from excel services
+            services.AddTransient<IImportOrderFromExcelVPSService, ImportOrderFromExcelVPSService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
