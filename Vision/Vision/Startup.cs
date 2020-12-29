@@ -59,6 +59,7 @@ namespace Vision
 
             //Add import from excel services
             services.AddTransient<IImportOrderFromExcelVPSService, ImportOrderFromExcelVPSService>();
+            services.AddTransient<IImportOrderFromExcelVNDService, ImportOrderFromExcelVNDService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

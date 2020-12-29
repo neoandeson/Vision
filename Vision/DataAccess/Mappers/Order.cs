@@ -2,11 +2,20 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using static DataService.Utilities.Constants;
 
 namespace DataService.Models
 {
     public partial class Order
     {
+        public void CalculateTax()
+        {
+            if(this.Type == OrderType.Sell)
+            {
+                this.Tax = (this.Quantity * this.Price) * 0.0001;
+            }
+        }
+
         public OrderDTO MapToDTO()
         {
             OrderDTO dto = new OrderDTO()

@@ -9,16 +9,16 @@ using System.Text;
 
 namespace DataService.Services.ImportExcelServices
 {
-    public interface IImportOrderFromExcelVPSService
+    public interface IImportOrderFromExcelVNDService
     {
         ServiceResponse<bool> Import(FileStream fs);
     }
 
-    public class ImportOrderFromExcelVPSService : IImportOrderFromExcelVPSService
+    public class ImportOrderFromExcelVNDService : IImportOrderFromExcelVNDService
     {
         private readonly VisionContext _dbContext;
 
-        public ImportOrderFromExcelVPSService(VisionContext dbContext)
+        public ImportOrderFromExcelVNDService(VisionContext dbContext)
         {
             _dbContext = dbContext;
         }
@@ -34,25 +34,29 @@ namespace DataService.Services.ImportExcelServices
                 {
                     while (reader.Read()) //Each row of the file
                     {
-                        orders.Add(new Order
+                        Order order = new Order
                         {
                             UserId = 0,
 
-                            MatchTime = DateTime.ParseExact(reader.GetValue(0).ToString(), "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture),
-                            OrderNumber = reader.GetDouble(1).ToString(),
-                            AccountId = (int)reader.GetDouble(2),
+                            MatchTime = DateTime.ParseExact(
+                                reader.GetValue(1).ToString().Substring(0, 10) 
+                                + reader.GetValue(12).ToString().Substring(10, 8), "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture),
+                            OrderNumber = reader.GetDouble(0).ToString(),
+                            AccountId = 111,//TODO
                             Type = CommonFunction.GetOrderType(reader.GetString(3)),
 
-                            SymbolName = reader.GetValue(4).ToString(),
+                            SymbolName = reader.GetValue(2).ToString(),
                             SymbolId = 0,
 
                             Quantity = (int)reader.GetDouble(7),
                             Price = reader.GetDouble(8),
                             Fee = reader.GetDouble(10),
-                            Tax = reader.GetDouble(11),
 
-                            Note = reader.GetString(14)
-                        });
+                            Note = reader.GetString(11)
+                        };
+                        order.CalculateTax();
+
+                        orders.Add(order);
                     }
 
                     _dbContext.Order.AddRange(orders);
@@ -61,7 +65,7 @@ namespace DataService.Services.ImportExcelServices
                     response = new ServiceResponse<bool>()
                     {
                         IsSuccess = true,
-                        Message = Constants.ResponseMessage.ImportOrderFromExcel_VPS_Sucess,
+                        Message = Constants.ResponseMessage.ImportOrderFromExcel_VND_Sucess,
                     };
                 }
             }
@@ -70,7 +74,7 @@ namespace DataService.Services.ImportExcelServices
                 response = new ServiceResponse<bool>()
                 {
                     IsSuccess = false,
-                    Message = Constants.ResponseMessage.ImportOrderFromExcel_VPS_Fail,
+                    Message = Constants.ResponseMessage.ImportOrderFromExcel_VND_Fail,
                 };
             }
 

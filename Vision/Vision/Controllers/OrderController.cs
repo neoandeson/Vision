@@ -18,13 +18,15 @@ namespace Vision.Controllers
     {
         private readonly IOrderService _sellOrderService;
         private readonly IImportOrderFromExcelVPSService _importOrderFromExcelVPSService;
+        private readonly IImportOrderFromExcelVNDService _importOrderFromExcelVNDService;
         private readonly int _authUserID = CurrentUser.AuthUserID;
         private readonly IWebHostEnvironment _env;
 
-        public OrderController(IOrderService sellOrderService, IWebHostEnvironment env, IImportOrderFromExcelVPSService importOrderFromExcelVPSService)
+        public OrderController(IOrderService sellOrderService, IWebHostEnvironment env, IImportOrderFromExcelVPSService importOrderFromExcelVPSService, IImportOrderFromExcelVNDService importOrderFromExcelVNDService)
         {
             _sellOrderService = sellOrderService;
             _importOrderFromExcelVPSService = importOrderFromExcelVPSService;
+            _importOrderFromExcelVNDService = importOrderFromExcelVNDService;
             _env = env;
         }
 
@@ -51,6 +53,7 @@ namespace Vision.Controllers
                     switch (model.CompanyId)
                     {
                         case 1: //VNDirect
+                            _importOrderFromExcelVNDService.Import(fileStream);
                             break;
                         case 2: //VPS 
                             _importOrderFromExcelVPSService.Import(fileStream); 

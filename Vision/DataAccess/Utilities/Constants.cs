@@ -36,6 +36,12 @@ namespace DataService.Utilities
             public static int DeActive = 0;
         }
 
+        public static class OrderType
+        {
+            public static int Buy = 1;
+            public static int Sell = 2;
+        }
+
         public static class ResponseMessage
         {
             public static string BuyInSuccessfully = "Buy In Successfully";
@@ -44,6 +50,9 @@ namespace DataService.Utilities
 
             public static string ImportOrderFromExcel_VPS_Sucess = "Import order history from VPS excel successfully";
             public static string ImportOrderFromExcel_VPS_Fail = "Import order history from VPS excel fail";
+
+            public static string ImportOrderFromExcel_VND_Sucess = "Import order history from VND excel successfully";
+            public static string ImportOrderFromExcel_VND_Fail = "Import order history from VND excel fail";
         }
     }
 }
